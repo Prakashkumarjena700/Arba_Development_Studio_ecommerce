@@ -9,7 +9,7 @@ const productSchema = mongoose.Schema({
         ref: 'Category',
         required: true,
     },
-    image: { type: Number, require: true },
+    image: { type: String, require: true },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
