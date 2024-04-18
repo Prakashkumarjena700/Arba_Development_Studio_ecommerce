@@ -34,7 +34,7 @@ const Carousel = () => {
             </div>
             <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', marginTop: '20px' }}>
                 {images.map((_, index) => (
-                    <button key={index} onClick={() => handleDotClick(index)} style={{ width: '10px', height: '10px', borderRadius: '50%', margin: '0 5px', backgroundColor: currentIndex === index ? 'black' : 'gray', border: 'none', cursor: 'pointer' }}></button>
+                    <button key={index} onClick={() => handleDotClick(index)} style={{ width: '10px', height: '10px', borderRadius: '50%', margin: '0 5px', backgroundColor: currentIndex === index ? '#0087A0' : '#00AAC3', border: 'none', cursor: 'pointer' }}></button>
                 ))}
             </div>
         </div>
