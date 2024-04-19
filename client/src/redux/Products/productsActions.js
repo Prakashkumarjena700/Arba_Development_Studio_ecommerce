@@ -79,12 +79,13 @@ export const fetchProducts = () => async (dispatch) => {
     }
 };
 
-export const editProduct = (categoryData) => async (dispatch) => {
+export const editProduct = (productData) => async (dispatch) => {
     try {
+
         dispatch(editProductStart());
-        await fetch(`${baseUrl}/category/edit/${categoryData.id}`, {
+        await fetch(`${baseUrl}/product/edit/${productData.id}`, {
             method: "PATCH",
-            body: JSON.stringify(categoryData.payload),
+            body: JSON.stringify(productData.payload),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token')
@@ -102,13 +103,15 @@ export const editProduct = (categoryData) => async (dispatch) => {
     }
 };
 
-export const deleteProduct = (categoryId) => async (dispatch) => {
+export const deleteProduct = (selectedProducts) => async (dispatch) => {
     try {
         dispatch(deleteProductStart());
 
-        await fetch(`${baseUrl}/category/delete/${categoryId}`, {
+        await fetch(`${baseUrl}/product/delete`, {
             method: "DELETE",
+            body: JSON.stringify({ productIds: selectedProducts }),
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token')
             }
         }).then(res => res.json())

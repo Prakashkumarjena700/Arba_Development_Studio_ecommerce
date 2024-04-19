@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { addCategory, editCategory, fetchCategories, deleteCategory } from '../redux/Products/productsActions';
 import { addProduct, editProduct, fetchProducts, deleteProduct } from '../redux/Products/productsActions';
 import { ImSpinner2 } from "react-icons/im";
 
@@ -20,6 +19,17 @@ export default function StoreProducts() {
     const [editModal, setEditModal] = useState(false)
     const [product, setProduct] = useState({})
     const [confModal, setConfModal] = useState(false)
+    const [selectedProducts, setSelectedProducts] = useState([]);
+
+
+    const handleCheckboxChange = (productId) => {
+        if (selectedProducts.includes(productId)) {
+            setSelectedProducts(selectedProducts.filter(id => id !== productId));
+        } else {
+            setSelectedProducts([...selectedProducts, productId]);
+        }
+    };
+
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -28,7 +38,6 @@ export default function StoreProducts() {
 
     const categoryList = useSelector(state => state.categories.categories);
     const categories = useSelector(state => state.categories.categories);
-    console.log(products);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -56,13 +65,16 @@ export default function StoreProducts() {
         e.preventDefault();
         if (editModal) {
             let payload = {
-                name,
+                title,
+                description,
+                category,
+                price: Number(price),
                 slug,
                 image: product.image,
                 owner: product.owner
             }
             dispatch(editProduct({ id: product._id, payload }))
-            setEditModal(false)
+            // setEditModal(false)
         } else {
             dispatch(addProduct({ title, description, price: Number(price), category, image }));
             setEditModal(false)
@@ -91,16 +103,20 @@ export default function StoreProducts() {
         }
     }, [isAdding, isAdded, isEditing, isEdited, isDeleted, isDeleted, isDeleting]);
 
-    const editCat = (cat) => {
-        setProduct(cat);
+    const editProd = (ele) => {
+        setProduct(ele);
         setEditModal(true)
         setIsModalOpen(true);
-        setName(cat.name)
-        setSlug(cat.slug)
+        setTitle(ele.title)
+        setSlug(ele.slug)
+        setCategory(ele.category)
+        setPrice(ele.price)
+        setDescription(ele.description)
     }
 
     const delCat = () => {
-        dispatch(deleteProduct(product._id))
+        dispatch(deleteProduct(selectedProducts))
+        setSelectedProducts([])
     }
 
     return (
@@ -108,10 +124,16 @@ export default function StoreProducts() {
             <div className='flex gap-3 mt-3'>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={handleAddButtonClick}>Add</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
+                {selectedProducts.length > 0 && (
+                    <button className="bg-red-500 text-white px-2 rounded absolute right-2 mb-3" onClick={() => setConfModal(true)}>Delete Selected</button>
+
+                )}
             </div>
+
+
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg">
+                    <div className="bg-white p-6 rounded-lg w-[40%]">
                         <h2 className="text-xl font-semibold mb-2">{editModal ? 'Edit' : 'Add'} Product</h2>
                         <form onSubmit={handleFormSubmit}>
                             <div className="mb-4">
@@ -144,9 +166,9 @@ export default function StoreProducts() {
                                     placeholder='0.00'
                                 />
                             </div>
-
                             <div>
                                 <select
+                                    value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                     className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] text-gray-400"
                                 >
@@ -202,7 +224,7 @@ export default function StoreProducts() {
                 confModal && (
                     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50' >
                         <div className='bg-white p-9 rounded-lg' >
-                            <p>Are you sure you want to delete the category ?</p>
+                            <p>Are you sure you want to delete checked products ?</p>
                             <br />
                             <div className="flex justify-center gap-4">
                                 <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setConfModal(false)}>Cancel</button>
@@ -246,19 +268,21 @@ export default function StoreProducts() {
                                 <td className='border-2 border-black' >{ele.slug}</td>
                                 <td className='border-2 border-black' >
                                     <button
-                                        onClick={() => editCat(ele)}
+                                        onClick={() => editProd(ele)}
                                     >Edit</button></td>
-                                <td className='border-2 border-black' >
-                                    <button
-                                        onClick={() => {
-                                            setConfModal(true)
-                                            setProduct(ele)
-                                        }}
-                                    >Delete</button></td>
+                                <td className='border-2 border-black'>
+                                    <input
+                                        type="checkbox"
+                                        value={product._id}
+                                        checked={selectedProducts.includes(ele._id)}
+                                        onChange={() => handleCheckboxChange(ele._id)}
+                                    />
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
             </div>
         </div>
     );

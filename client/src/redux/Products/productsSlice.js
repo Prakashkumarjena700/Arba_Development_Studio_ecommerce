@@ -12,7 +12,7 @@ const initialState = {
     isEdited: false,
     isDeleting: false,
     deleteError: null,
-    isDeleted: false,
+    isDeleted: false
 };
 
 const categoriesSlice = createSlice({
