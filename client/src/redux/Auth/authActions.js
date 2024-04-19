@@ -2,7 +2,6 @@ import { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess,
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-
 export const login = (userName, password) => async (dispatch) => {
     dispatch(loginStart());
     try {
