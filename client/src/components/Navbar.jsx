@@ -29,7 +29,7 @@ export default function Navbar() {
                 >
                     <div className='flex cursor-pointer' onClick={() => navigate('/cart')} >
                         <PiShoppingCartFill className='text-[30px]' />
-                        <p className='border absolute bottom-6 left-5 px-1.5 rounded-full' >{cart.length}</p>
+                        <p className='border absolute bottom-6 left-5 px-1.5 rounded-full' >{cart?.length}</p>
                     </div>
                     <button onClick={toggleDropdown} className='ml-4 w-10'><img src={user?.avatar} alt="" /></button>
                 </div>
