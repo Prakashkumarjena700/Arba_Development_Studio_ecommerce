@@ -26,7 +26,7 @@ export default function StoreProducts() {
     const [price, setPrice] = useState('')
     const [category, setCategory] = useState('')
 
-    const categoryList = useSelector(state => state.products.categories);
+    const categoryList = useSelector(state => state.categories.categories);
     const categories = useSelector(state => state.categories.categories);
     console.log(products);
 
