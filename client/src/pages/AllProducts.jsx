@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import TermsAndCondition from '../components/TermsAndCondition'
-import Carousel from '../components/Carousel'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts } from '../redux/Products/productsActions';
-import { Link } from 'react-router-dom'
+import { fetchProducts, addingCartCount } from '../redux/Products/productsActions';
 
 export default function AllProducts() {
   const products = useSelector(state => state.products.products);
+  // const cartVal = useSelector(state => state.products.cartCount);
+  // console.log(cartVal);
+
+  console.log(products);
+
+  const cartVal = useSelector(state => state.products.cartCount);
+  console.log(cartVal);
+
+
   const dispatch = useDispatch();
   const [product, setProduct] = useState({})
   const [count, setCount] = useState(1)
@@ -28,6 +34,8 @@ export default function AllProducts() {
       const newEle = { ...ele, qty: 1 };
       let newArray = [...cart, newEle]
       localStorage.setItem('cart', JSON.stringify(newArray))
+      dispatch(addingCartCount(newArray.length));
+
     } else {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { PiShoppingCartFill } from "react-icons/pi";
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const user = JSON.parse(localStorage.getItem('user'))
-    const cart = JSON.parse(localStorage.getItem('cart'))
+
+    const cartVal = useSelector(state => state.products.cartCount);
+
 
     const navigate = useNavigate()
 
@@ -17,6 +20,8 @@ export default function Navbar() {
     const logOut = () => {
         localStorage.removeItem('user')
         localStorage.removeItem('token')
+        localStorage.removeItem('cart')
+        localStorage.removeItem('hasAcceptedTerms')
         navigate('/login')
     }
 
@@ -29,7 +34,7 @@ export default function Navbar() {
                 >
                     <div className='flex cursor-pointer' onClick={() => navigate('/cart')} >
                         <PiShoppingCartFill className='text-[30px]' />
-                        <p className='border absolute bottom-6 left-5 px-1.5 rounded-full' >{cart?.length}</p>
+                        <p className='border absolute bottom-6 left-5 px-1.5 rounded-full' >{cartVal}</p>
                     </div>
                     <button onClick={toggleDropdown} className='ml-4 w-10'><img src={user?.avatar} alt="" /></button>
                 </div>

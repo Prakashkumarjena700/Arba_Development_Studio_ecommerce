@@ -11,6 +11,7 @@ import {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
+    addCartCount
 } from './productsSlice';
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -128,5 +129,13 @@ export const deleteProduct = (selectedProducts) => async (dispatch) => {
 
     } catch (error) {
         dispatch(deleteProductFailure(error.message));
+    }
+};
+
+export const addingCartCount = (payload) => (dispatch) => {
+    try {
+        dispatch(addCartCount(payload));
+    } catch (err) {
+        console.error('Error adding cart count:', err);
     }
 };

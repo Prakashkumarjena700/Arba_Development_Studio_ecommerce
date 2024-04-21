@@ -1,5 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const getInitialCartCount = () => {
+    const cartFromStorage = localStorage.getItem('cart');
+    if (cartFromStorage) {
+        const parsedCart = JSON.parse(cartFromStorage);
+        return parsedCart.length;
+    }
+    return 0;
+};
+
 const initialState = {
     products: [],
     isAdding: false,
@@ -12,7 +21,9 @@ const initialState = {
     isEdited: false,
     isDeleting: false,
     deleteError: null,
-    isDeleted: false
+    isDeleted: false,
+    cartCount: getInitialCartCount(),
+
 };
 
 const categoriesSlice = createSlice({
@@ -67,6 +78,9 @@ const categoriesSlice = createSlice({
             state.isDeleting = false;
             state.deleteError = action.payload;
         },
+        addCartCount(state, payload) {
+            state.cartCount = payload.payload
+        }
     },
 });
 
@@ -83,6 +97,7 @@ export const {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
+    addCartCount
 } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;
