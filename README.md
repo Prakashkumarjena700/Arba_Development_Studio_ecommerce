@@ -9,7 +9,7 @@ prakashkumar
 Please use the provided username and password to access the system.
 
 ## Frontend:
-React js, Tailwind CSS,
+React js, Redux toolkit, Tailwind CSS,
 
 ## Backend:
 Node js, express js
