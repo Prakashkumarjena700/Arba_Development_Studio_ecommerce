@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory, editCategory, fetchCategories, deleteCategory } from '../redux/Categories/categoriesActions';
+import { addCategory, editCategory, fetchCategories, deleteCategory, getAllcategories } from '../redux/Categories/categoriesActions';
 import { ImSpinner2 } from "react-icons/im";
+import Loader from './Loader';
 
 export default function StoreCategories() {
     const dispatch = useDispatch();
+    const isFetching = useSelector(state => state.categories.isFetching);
+    const allCategories = useSelector(state => state.categories.allCategories);
     const isAdding = useSelector(state => state.categories.isAdding);
     const isEditing = useSelector(state => state.categories.isEditing);
     const isAdded = useSelector(state => state.categories.isAdded);
@@ -19,10 +22,17 @@ export default function StoreCategories() {
     const [editModal, setEditModal] = useState(false)
     const [category, setCategory] = useState({})
     const [confModal, setConfModal] = useState(false)
+    const [filterModal, setFilterModal] = useState(false)
+
+    console.log(allCategories);
 
     useEffect(() => {
-        dispatch(fetchCategories());
-    }, [dispatch]);
+        dispatch(fetchCategories(name));
+    }, []);
+
+    useEffect(() => {
+        dispatch(getAllcategories())
+    }, [])
 
     const handleAddButtonClick = () => {
         setEditModal(false)
@@ -64,18 +74,19 @@ export default function StoreCategories() {
             setIsModalOpen(false);
             setName('');
             setImage(null);
-            dispatch(fetchCategories());
+            dispatch(fetchCategories(""));
         }
         if (!isEditing && isEdited) {
             setIsModalOpen(false);
             setName('');
             setImage(null);
-            dispatch(fetchCategories());
+            dispatch(fetchCategories(""));
         }
         if (!isDeleting && isDeleted) {
             setConfModal(false);
-            dispatch(fetchCategories());
+            dispatch(fetchCategories(""));
         }
+
     }, [isAdding, isAdded, isEditing, isEdited, isDeleted, isDeleted, isDeleting]);
 
     const editCat = (cat) => {
@@ -94,6 +105,7 @@ export default function StoreCategories() {
         <div className='p-5'>
             <div className='flex gap-3 mt-3'>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={handleAddButtonClick}>Add</button>
+                <button className='bg-[#00AAC3] text-white px-3' onClick={() => setFilterModal(true)}>Filter</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
             </div>
             {isModalOpen && (
@@ -168,6 +180,35 @@ export default function StoreCategories() {
                 )
             }
 
+            {
+                filterModal && (
+                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
+                        <div className='bg-white p-9 rounded-lg w-[300px]' >
+                            <p>Filter category by name :</p>
+                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded my-3 cursor-pointer'
+                            >
+                                <option value="">Select</option>
+                                {
+                                    allCategories?.map((ele) => <option key={ele._id} value={ele.name}>{ele.name}</option>)
+                                }
+                            </select>
+                            <br />
+                            <div className="flex justify-center gap-4">
+                                <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setFilterModal(false)}>Cancel</button>
+                                <button className="px-4 py-1 bg-green-500 text-white rounded flex justify-center items-center h-10 " onClick={() => {
+                                    dispatch(fetchCategories(name));
+                                    setName('')
+                                    setFilterModal(false)
+                                }} >
+                                    <span>Apply</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                )
+            }
+
             <div>
                 <table
                     className='m-auto w-full mt-3'
@@ -184,32 +225,42 @@ export default function StoreCategories() {
                         </tr>
                     </thead>
                     <tbody>
-                        {categories.map(category => (
-                            <tr
-                                className='border-b-2 border-black'
-                                key={category._id}>
-                                <td
-                                    className='border border-black'
-                                ><img className='w-16 m-auto' src={category.image} alt={category.name} /></td>
-                                <td
-                                    className='border-2 border-black'
-                                >{category.name}</td>
-                                <td className='border-2 border-black' >{category.slug}</td>
-                                <td className='border-2 border-black' >
-                                    <button
-                                        onClick={() => editCat(category)}
-                                    >Edit</button></td>
-                                <td className='border-2 border-black' >
-                                    <button
-                                        onClick={() => {
-                                            setConfModal(true)
-                                            setCategory(category)
-                                        }}
-                                    >Delete</button></td>
-                            </tr>
-                        ))}
+                        {
+                            !isFetching &&
+                            categories && categories.map(category => (
+                                <tr
+                                    className='border-b-2 border-black'
+                                    key={category._id}>
+                                    <td
+                                        className='border border-black'
+                                    ><img className='w-16 m-auto' src={category.image} alt={category.name} /></td>
+                                    <td
+                                        className='border-2 border-black'
+                                    >{category.name}</td>
+                                    <td className='border-2 border-black' >{category.slug}</td>
+                                    <td className='border-2 border-black' >
+                                        <button
+
+                                            onClick={() => editCat(category)}
+                                        >Edit</button></td>
+                                    <td className='border-2 border-black' >
+                                        <button
+                                            onClick={() => {
+                                                setConfModal(true)
+                                                setCategory(category)
+                                            }}
+                                        >Delete</button></td>
+                                </tr>
+                            ))
+
+                        }
                     </tbody>
+
                 </table>
+                {
+                    isFetching && <Loader />
+                }
+
             </div>
         </div>
     );

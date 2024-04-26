@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, editProduct, fetchProducts, deleteProduct } from '../redux/Products/productsActions';
+import { addProduct, editProduct, fetchProducts, deleteProduct, getAllProducts } from '../redux/Products/productsActions';
 import { ImSpinner2 } from "react-icons/im";
 
 export default function StoreProducts() {
@@ -20,6 +20,7 @@ export default function StoreProducts() {
     const [product, setProduct] = useState({})
     const [confModal, setConfModal] = useState(false)
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [filterModal, setFilterModal] = useState(false)
 
 
     const handleCheckboxChange = (productId) => {
@@ -38,9 +39,13 @@ export default function StoreProducts() {
 
     const categoryList = useSelector(state => state.categories.categories);
     const categories = useSelector(state => state.categories.categories);
+    const allProducts = useSelector(state => state.products.allProducts);
+
+    console.log(allProducts);
 
     useEffect(() => {
         dispatch(fetchProducts());
+        dispatch(getAllProducts());
     }, [dispatch]);
 
     const handleAddButtonClick = () => {
@@ -123,6 +128,7 @@ export default function StoreProducts() {
         <div className='p-5'>
             <div className='flex gap-3 mt-3'>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={handleAddButtonClick}>Add</button>
+                <button className='bg-[#00AAC3] text-white px-3' onClick={() => setFilterModal(true)} >Filter</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
                 {selectedProducts.length > 0 && (
                     <button className="bg-red-500 text-white px-2 rounded absolute right-2 mb-3" onClick={() => setConfModal(true)}>Delete Selected</button>
@@ -234,6 +240,43 @@ export default function StoreProducts() {
                             </div>
                         </div>
 
+
+                    </div>
+                )
+            }
+
+            {
+                filterModal && (
+                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
+                        <div className='bg-white p-9 rounded-lg w-[300px]' >
+                            <p>Filter product by name :</p>
+                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded cursor-pointer'
+                            >
+                                <option value="">Select</option>
+                                {
+                                    allProducts?.map((ele) => <option key={ele._id} value={ele.title}>{ele.title}</option>)
+                                }
+                            </select>
+                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded cursor-pointer'
+                            >
+                                <option value="">Select</option>
+                                {
+                                    allProducts?.map((ele) => <option key={ele._id} value={ele.category}>{ele.category}</option>)
+                                }
+                            </select>
+                            <br />
+                            <div className="flex justify-center gap-4">
+                                <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setFilterModal(false)}>Cancel</button>
+                                <button className="px-4 py-1 bg-green-500 text-white rounded flex justify-center items-center h-10 " onClick={() => {
+                                    // dispatch(fetchCategories(name));
+                                    console.log('lets filte product');
+                                    setName('')
+                                    setFilterModal(false)
+                                }} >
+                                    <span>Apply</span>
+                                </button>
+                            </div>
+                        </div>
 
                     </div>
                 )

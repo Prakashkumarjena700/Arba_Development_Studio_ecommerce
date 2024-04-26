@@ -11,6 +11,7 @@ import {
     deleteCategoryStart,
     deleteCategorySuccess,
     deleteCategoryFailure,
+    getAllcategoriesList
 } from './categoriesSlice';
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -54,10 +55,10 @@ export const addCategory = (categoryData) => async (dispatch) => {
 };
 
 
-export const fetchCategories = () => async (dispatch) => {
+export const fetchCategories = (name) => async (dispatch) => {
     try {
         dispatch(fetchCategoriesStart());
-        await fetch(`${baseUrl}/category/get`, {
+        await fetch(`${baseUrl}/category/get?name=${name ? name : ""}`, {
             method: "GET",
             headers: {
                 'Authorization': localStorage.getItem('token')
@@ -77,6 +78,28 @@ export const fetchCategories = () => async (dispatch) => {
         dispatch(fetchCategoriesFailure(error.message));
     }
 };
+
+export const getAllcategories = () => async (dispatch) => {
+    try {
+        await fetch(`${baseUrl}/category/get`, {
+            method: "GET",
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    dispatch(getAllcategoriesList(res.categories));
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const editCategory = (categoryData) => async (dispatch) => {
     try {

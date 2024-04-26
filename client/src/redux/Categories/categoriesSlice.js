@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     categories: [],
+    allCategories: [],
     isAdding: false,
     error: null,
     isAdded: false,
@@ -38,6 +39,9 @@ const categoriesSlice = createSlice({
         fetchCategoriesSuccess(state, action) {
             state.isFetching = false;
             state.categories = action.payload;
+        },
+        getAllcategoriesList(state, action) {
+            state.allCategories = action.payload;
         },
         fetchCategoriesFailure(state, action) {
             state.isFetching = false;
@@ -83,6 +87,7 @@ export const {
     deleteCategoryStart,
     deleteCategorySuccess,
     deleteCategoryFailure,
+    getAllcategoriesList
 } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

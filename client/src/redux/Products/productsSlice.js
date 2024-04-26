@@ -11,6 +11,7 @@ const getInitialCartCount = () => {
 
 const initialState = {
     products: [],
+    allProducts: [],
     isAdding: false,
     error: null,
     isAdded: false,
@@ -45,6 +46,9 @@ const categoriesSlice = createSlice({
         fetchProductsStart(state) {
             state.isFetching = true;
             state.fetchError = null;
+        },
+        getAllProductList(state, action) {
+            state.allProducts = action.payload;
         },
         fetchProductsSuccess(state, action) {
             state.isFetching = false;
@@ -97,7 +101,8 @@ export const {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
-    addCartCount
+    addCartCount,
+    getAllProductList
 } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

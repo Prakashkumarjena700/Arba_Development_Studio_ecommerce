@@ -11,10 +11,10 @@ import {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
-    addCartCount
+    addCartCount,
+    getAllProductList
 } from './productsSlice';
 const baseUrl = process.env.REACT_APP_BASE_URL;
-
 
 export const addProduct = (categoryData) => async (dispatch) => {
     try {
@@ -56,10 +56,10 @@ export const addProduct = (categoryData) => async (dispatch) => {
 };
 
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = (title = "", category = "", price = "", order = "") => async (dispatch) => {
     try {
         dispatch(fetchProductsStart());
-        await fetch(`${baseUrl}/product/get`, {
+        await fetch(`${baseUrl}/product/get?title=${title}&category=${category}&sort=${price}&order=${order}`, {
             method: "GET",
             headers: {
                 'Authorization': localStorage.getItem('token')
@@ -79,6 +79,28 @@ export const fetchProducts = () => async (dispatch) => {
         dispatch(fetchProductsFailure(error.message));
     }
 };
+
+export const getAllProducts = () => async (dispatch) => {
+    try {
+        await fetch(`${baseUrl}/product/get`, {
+            method: "GET",
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    dispatch(getAllProductList(res.products));
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const editProduct = (productData) => async (dispatch) => {
     try {
