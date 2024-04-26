@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { PiShoppingCartFill } from "react-icons/pi";
-import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-
+import { useSelector, useDispatch } from 'react-redux';
+import { addingCartCount } from '../redux/Products/productsActions';
 export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const user = JSON.parse(localStorage.getItem('user'))
+    const dispatch = useDispatch();
 
     const cartVal = useSelector(state => state.products.cartCount);
 
@@ -22,6 +23,7 @@ export default function Navbar() {
         localStorage.removeItem('token')
         localStorage.removeItem('cart')
         localStorage.removeItem('hasAcceptedTerms')
+        dispatch(addingCartCount(0));
         navigate('/login')
     }
 
