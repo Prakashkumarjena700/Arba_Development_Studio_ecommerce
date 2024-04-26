@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, editProduct, fetchProducts, deleteProduct, getAllProducts } from '../redux/Products/productsActions';
 import { ImSpinner2 } from "react-icons/im";
+import { CiSearch } from "react-icons/ci";
+
 
 export default function StoreProducts() {
     const dispatch = useDispatch();
@@ -21,6 +23,9 @@ export default function StoreProducts() {
     const [confModal, setConfModal] = useState(false)
     const [selectedProducts, setSelectedProducts] = useState([]);
     const [filterModal, setFilterModal] = useState(false)
+    const [search, setSearch] = useState('')
+    const [filter, setFilter] = useState('')
+    const [short, setShort] = useState('')
 
 
     const handleCheckboxChange = (productId) => {
@@ -248,36 +253,82 @@ export default function StoreProducts() {
             {
                 filterModal && (
                     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
-                        <div className='bg-white p-9 rounded-lg w-[300px]' >
-                            <p>Filter product by name :</p>
-                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded cursor-pointer'
+                        <div className='bg-white p-9 rounded-lg w-[400px]' >
+                            <p 
+                            className='text-left py-1'
+                            >Search product by name :</p>
+                            <div
+                                className='flex'
                             >
-                                <option value="">Select</option>
-                                {
-                                    allProducts?.map((ele) => <option key={ele._id} value={ele.title}>{ele.title}</option>)
-                                }
-                            </select>
-                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded cursor-pointer'
-                            >
-                                <option value="">Select</option>
-                                {
-                                    allProducts?.map((ele) => <option key={ele._id} value={ele.category}>{ele.category}</option>)
-                                }
-                            </select>
-                            <br />
-                            <div className="flex justify-center gap-4">
-                                <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setFilterModal(false)}>Cancel</button>
-                                <button className="px-4 py-1 bg-green-500 text-white rounded flex justify-center items-center h-10 " onClick={() => {
-                                    // dispatch(fetchCategories(name));
-                                    console.log('lets filte product');
-                                    setName('')
-                                    setFilterModal(false)
-                                }} >
-                                    <span>Apply</span>
+                                <input
+                                    className='w-full border px-2 outline-none'
+                                    type="text"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)} placeholder='Search...' />
+                                <button
+                                    className='border bg-[#00AAC3] text-white px-4 py-2  '
+                                    onClick={() => {
+                                        setFilterModal(false)
+                                        dispatch(fetchProducts(search, "", "", ""))
+                                        setFilterModal(false)
+                                    }}
+                                ><CiSearch />
                                 </button>
                             </div>
-                        </div>
 
+                            <p 
+                            className='text-left my-2'
+                            >Filter:</p>
+                            <select
+                                value={filter}
+                                onChange={(e) => setFilter(e.target.value)} className='border w-full rounded cursor-pointer p-2'
+                            >
+                                <option value="">Select</option>
+                                {
+                                    allProducts?.map((ele) => <option key={ele._id} value={ele.category._id}>{ele.category.name}</option>)
+                                }
+                            </select>
+                            <p className='text-left my-2' htmlFor="">Short:</p>
+                            <select onChange={(e) => setShort(e.target.value)} className='border w-full rounded cursor-pointer p-2'
+                                value={short}
+                            >
+                                <option value="">Select</option>
+                                <option value="ltoh">Price Low to Hight</option>
+                                <option value="htol">Price High to Low</option>
+                            </select>
+
+                            <br />
+                            <div className="flex justify-center gap-4 mt-6">
+                                <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setFilterModal(false)}>Cancel</button>
+                                <button
+                                    className="mr-2 px-4 py-1 bg-green-500 text-white rounded "
+                                    onClick={() => {
+                                        console.log(search, filter, short);
+                                        let priceShortOrder = "";
+                                        let isShort = "";
+                                        if (short == 'ltoh') {
+                                            priceShortOrder = -1
+                                            isShort = 'price'
+                                        } else if (short == 'htol') {
+                                            priceShortOrder = 1
+                                            isShort = 'price'
+                                        }
+
+                                        if (isShort) {
+                                            setFilterModal(false)
+                                            dispatch(fetchProducts(search, filter, isShort, priceShortOrder))
+                                        } else {
+                                            setFilterModal(false)
+                                            dispatch(fetchProducts(search, filter, isShort, priceShortOrder))
+                                        }
+
+                                        setFilterModal(false)
+
+                                    }}
+
+                                >Apply</button>
+                            </div>
+                        </div>
                     </div>
                 )
             }
@@ -327,6 +378,6 @@ export default function StoreProducts() {
                 </table>
 
             </div>
-        </div>
+        </div >
     );
 }
