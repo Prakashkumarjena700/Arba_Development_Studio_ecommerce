@@ -135,7 +135,7 @@ export default function StoreProducts() {
 
 
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg w-[40%]">
                         <h2 className="text-xl font-semibold mb-2">{editModal ? 'Edit' : 'Add'} Product</h2>
                         <form onSubmit={handleFormSubmit}>
@@ -173,12 +173,12 @@ export default function StoreProducts() {
                                 <select
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
-                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] text-gray-400"
+                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] text-gray-400 cursor-pointer"
                                 >
                                     <option value="">Select category</option>
                                     {
                                         categoryList && categories.map((ele) => (
-                                            <option key={ele._id} value={ele._id}>{ele.name}</option>
+                                            <option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>
                                         ))
 
                                     }
@@ -201,7 +201,7 @@ export default function StoreProducts() {
                             {
                                 !editModal &&
 
-                                <div className="mb-4">
+                                <div className="my-4">
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -253,12 +253,12 @@ export default function StoreProducts() {
                                 className='flex'
                             >
                                 <input
-                                    className='w-full border px-2 outline-none'
+                                    className='w-full border-b-2 border-[#00AAC3] px-2 outline-none'
                                     type="text"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)} placeholder='Search...' />
                                 <button
-                                    className='border bg-[#00AAC3] text-white px-4 py-2  '
+                                    className=' font-semibold bg-[#00AAC3] text-white px-4 py-2  '
                                     onClick={() => {
                                         setFilterModal(false)
                                         dispatch(fetchProducts(search, "", "", ""))
@@ -268,20 +268,22 @@ export default function StoreProducts() {
                                 </button>
                             </div>
 
-                            <p
-                                className='text-left my-2'
-                            >Filter:</p>
-                            <select
-                                value={filter}
-                                onChange={(e) => setFilter(e.target.value)} className='border w-full rounded cursor-pointer p-2'
-                            >
-                                <option value="">Select</option>
-                                {
-                                    allCategories?.map((ele) => <option key={ele._id} value={ele._id}>{ele.name}</option>)
-                                }
-                            </select>
-                            <p className='text-left my-2' htmlFor="">Short:</p>
-                            <select onChange={(e) => setShort(e.target.value)} className='border w-full rounded cursor-pointer p-2'
+                            <div className='my-4' >
+                                <p
+                                    className='text-left mt-2'
+                                >Filter by category:</p>
+                                <select
+                                    value={filter}
+                                    onChange={(e) => setFilter(e.target.value)} className='border-b-2 border-[#00AAC3] w-full cursor-pointer p-2 outline-none'
+                                >
+                                    <option value="">Select</option>
+                                    {
+                                        allCategories?.map((ele) => <option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>)
+                                    }
+                                </select>
+                            </div>
+                            <p className='text-left mt-2' htmlFor="">Short:</p>
+                            <select onChange={(e) => setShort(e.target.value)} className='border-b-2 border-[#00AAC3] w-full cursor-pointer p-2 outline-none'
                                 value={short}
                             >
                                 <option value="">Select</option>
@@ -295,14 +297,13 @@ export default function StoreProducts() {
                                 <button
                                     className="mr-2 px-4 py-1 bg-green-500 text-white rounded "
                                     onClick={() => {
-                                        console.log(search, filter, short);
                                         let priceShortOrder = "";
                                         let isShort = "";
                                         if (short == 'ltoh') {
-                                            priceShortOrder = -1
+                                            priceShortOrder = 1
                                             isShort = 'price'
                                         } else if (short == 'htol') {
-                                            priceShortOrder = 1
+                                            priceShortOrder = -1
                                             isShort = 'price'
                                         }
 

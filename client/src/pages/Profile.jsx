@@ -114,13 +114,14 @@ const Profile = () => {
         <div>
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
           <img src={user?.avatar} alt=""
-            className={`border w-28 ${loading ? 'bg-black opacity-10' : ''}`}
+            className={`border w-28 rounded-full ${loading ? 'bg-black opacity-10' : ''}`}
             onClick={handleImageClick} style={{ cursor: 'pointer' }} />
           <button className=' w-28 flex justify-center relative bottom-20 text-[30px] text-[#00AAC3]' >{loading && <span className='animate-spin' ><ImSpinner2 /></span>}</button>
         </div>
         <div>
           <p>{user?.userName}</p>
           <p>{user?.email}</p>
+          <p>Full Name: {user?.fullName}</p>
           <button
             onClick={() => {
               setFullNameModal(true)
@@ -155,7 +156,7 @@ const Profile = () => {
       {
         fullNameModal || passwordModal ?
 
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white p-8 ">
               {fullNameModal && (
                 <div>

@@ -109,7 +109,7 @@ export default function StoreCategories() {
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
             </div>
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg">
                         <h2 className="text-xl font-semibold mb-2">{editModal ? 'Edit' : 'Add'} Category</h2>
                         <form onSubmit={handleFormSubmit}>
@@ -182,14 +182,14 @@ export default function StoreCategories() {
 
             {
                 filterModal && (
-                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
+                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ' >
                         <div className='bg-white p-9 rounded-lg w-[300px]' >
                             <p>Filter category by name :</p>
-                            <select onChange={(e) => setName(e.target.value)} className='border w-full rounded my-3 cursor-pointer'
+                            <select onChange={(e) => setName(e.target.value)} className='border-b-2 border-[#00AAC3] outline-none w-full my-3 cursor-pointer'
                             >
                                 <option value="">Select</option>
                                 {
-                                    allCategories?.map((ele) => <option key={ele._id} value={ele.name}>{ele.name}</option>)
+                                    allCategories?.map((ele) => <option key={ele._id} value={ele.name}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>)
                                 }
                             </select>
                             <br />

@@ -24,7 +24,7 @@ function HomeCarousel() {
                     <img className='h-[350px] w-full' src="https://mindstacktechnologies.com/wordpress/wp-content/uploads/2018/01/ecommerce-banner.jpg" alt="" />
                 </div>
                 <div className='p-5' >
-                    <img className='h-[350px] w-full' src="https://static.vecteezy.com/system/resources/thumbnails/011/871/820/small/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" alt="" />
+                    <img className='h-[350px] w-full' src="https://static.vecteezy.com/system/resources/previews/002/294/833/non_2x/e-commerce-promotion-web-banner-design-free-vector.jpg" alt="" />
                 </div>
                 <div className='p-5' >
                     <img className='h-[350px] w-full' src="https://www.jdmedia.co.za/images/carousel/Ecommerce-Banner-1920.jpg" alt="" />
@@ -36,8 +36,7 @@ function HomeCarousel() {
                     <img className='h-[350px] w-full' src="https://static.vecteezy.com/system/resources/thumbnails/004/299/813/small/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" alt="" />
                 </div>
                 <div className=' p-5' >
-                    <img className='h-[350px] w-full' src="https://static.vecteezy.com/system/resources/previews/002/294/833/non_2x/e-commerce-promotion-web-banner-design-free-vector.jpg" alt="" />
-
+                    <img className='h-[350px] w-full' src="https://static.vecteezy.com/system/resources/thumbnails/011/871/820/small/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" alt="" />
                 </div>
 
             </Slider>

@@ -3,19 +3,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, addingCartCount } from '../redux/Products/productsActions';
 import { FaMinus, FaPlus } from "react-icons/fa";
 import Loader from '../components/Loader';
+import { CiSearch } from "react-icons/ci";
+import { getAllcategories } from '../redux/Categories/categoriesActions';
 
 export default function AllProducts() {
   const products = useSelector(state => state.products.products);
 
   const isFetching = useSelector(state => state.products.isFetching);
+  const allCategories = useSelector(state => state.categories.allCategories);
 
   const dispatch = useDispatch();
   const [product, setProduct] = useState({})
   const [count, setCount] = useState(1)
+  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState('')
+  const [short, setShort] = useState('')
+  const [order, setOrder] = useState('')
 
 
   useEffect(() => {
     dispatch(fetchProducts());
+    dispatch(getAllcategories())
   }, [dispatch]);
 
 
@@ -67,8 +75,84 @@ export default function AllProducts() {
 
   return (
     <div>
+      <div className='fixed top-5 border-b-2 border-[#00AAC3] z-50 flex w-[60%] justify-start h-10 left-40'  >
+        <button
+          className='bg-[#00AAC3] text-white py-1 px-3 '
+          onClick={() => {
+            setFilter('')
+            setShort('')
+            setOrder('')
+            setSearch('')
+            dispatch(fetchProducts())
+          }
+          } >Clar</button>
+        <div>
+          <select
+            value={short}
+            className=' w-full cursor-pointer p-2 pb-1.6 outline-none'
+            onChange={(e) => {
+              setShort(e.target.value)
+              let priceShortOrder = "";
+              let isShort = "";
+              if (e.target.value == 'ltoh') {
+                setOrder(1)
+                priceShortOrder = 1
+                isShort = 'price'
+              } else if (e.target.value == 'htol') {
+                setOrder(-1)
+                priceShortOrder = -1
+                isShort = 'price'
+              }
+
+              if (isShort) {
+                dispatch(fetchProducts("", filter, isShort, priceShortOrder))
+              } else {
+                dispatch(fetchProducts("", filter, isShort, priceShortOrder))
+              }
+
+            }
+
+            }
+
+          >
+            <option value="">Short</option>
+            <option value="ltoh">Price Low to Hight</option>
+            <option value="htol">Price High to Low</option>
+          </select>
+        </div>
+        <div className='' >
+          <select
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value)
+              dispatch(fetchProducts(search, e.target.value, short, order))
+            }}
+            className=' w-full cursor-pointer p-2 outline-none'
+          >
+            <option value="">Category</option>
+            {
+              allCategories?.map((ele) => <option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>)
+            }
+          </select>
+        </div>
+
+        <div className='flex w-[63%]'>
+          <input
+            className='w-full px-2 outline-none pl-5'
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)} placeholder='Search by name...' />
+          <button
+            className=' font-semibold bg-[#00AAC3] text-white px-4 '
+            onClick={() => {
+              dispatch(fetchProducts(search, "", "", ""))
+            }}
+          ><CiSearch />
+          </button>
+        </div>
+      </div>
       <div className='grid grid-cols-4 gap-20 p-10 ' >
-        {
+        {!isFetching &&
           products && products.map((ele) =>
             <div key={ele._id} className='h-[300px]' >
               <img className='w-full h-[70%]' src={ele.image} alt="" />
@@ -78,7 +162,7 @@ export default function AllProducts() {
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
                 <div>
                   {product._id !== ele._id && <button onClick={() => AddtoCart(ele)} className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button>}
-                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' ><span onClick={() => decreaseQty(ele._id)}  ><FaMinus /></span> <strong>{count}</strong> <span onClick={() => increaseQty(ele._id)} ><FaPlus /></span> </button>}
+                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' ><button disabled={count == 1} onClick={() => decreaseQty(ele._id)}  ><FaMinus /></button> <strong>{count}</strong> <span onClick={() => increaseQty(ele._id)} ><FaPlus /></span> </button>}
                 </div>
               </div>
             </div>
