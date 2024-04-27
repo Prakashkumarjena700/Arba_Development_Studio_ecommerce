@@ -1,9 +1,13 @@
-# Login Credentials
+</p>
+<img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714230007/Screenshot_2024-04-27_202949_zbqppy.png" />
+<p>
 
-## Username:
+## Login Credentials
+
+### Username:
 prakashkumar
 
-## Password:
+### Password:
 8888888
 
 Please use the provided username and password to access the system.
@@ -19,6 +23,12 @@ Mongo DB
 
 ## Deployment tools :
 Vercel, Cyclic
+
+## Libraries and tools :
+Nodemailer, Cloudinary, React Slick, etc.
+
+## Functionalities :
+SignUp, Login, Forgot password, CRUD, Filter, Short, Search, etc.
 
 <p>
  <img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714229326/Screenshot_2024-04-27_200005_gnshyh.png" />
