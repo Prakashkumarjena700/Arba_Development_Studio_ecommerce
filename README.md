@@ -26,7 +26,7 @@ Vercel, Cyclic
  <img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714229327/Screenshot_2024-04-27_201527_cplawb.png" />
  <img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714229325/Screenshot_2024-04-27_200704_j2kr1z.png" />
  <img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714229326/Screenshot_2024-04-27_201418_qivnov.png" />
-
+<img src="https://res.cloudinary.com/dkwrlyeva/image/upload/v1714229730/Screenshot_2024-04-27_202511_nmelws.png" />
 </p>
 <h3>Thank you for visiting</h3>
 
