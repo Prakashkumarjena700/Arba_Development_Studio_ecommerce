@@ -13,7 +13,7 @@ export const sendingMailForResetPassword = (email) => async (dispatch) => {
             }
         }).then(res => res.json())
             .then(res => {
-                console.log(res);
+                dispatch(mailSentSuccess({ res }))
             })
             .catch(err => console.log(err))
     } catch (err) {

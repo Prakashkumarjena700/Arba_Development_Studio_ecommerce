@@ -11,8 +11,7 @@ import {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
-    addCartCount,
-    getAllProductList
+    addCartCount
 } from './productsSlice';
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -79,28 +78,6 @@ export const fetchProducts = (title = "", category = "", price = "", order = "")
         dispatch(fetchProductsFailure(error.message));
     }
 };
-
-export const getAllProducts = () => async (dispatch) => {
-    try {
-        await fetch(`${baseUrl}/product/get`, {
-            method: "GET",
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        }).then(res => res.json())
-            .then(res => {
-                if (res.success) {
-                    dispatch(getAllProductList(res.products));
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
-
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const editProduct = (productData) => async (dispatch) => {
     try {

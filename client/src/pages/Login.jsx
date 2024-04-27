@@ -12,7 +12,6 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [showForgetPass, setShowForgetPass] = useState(false)
   const [email, setEmail] = useState('')
-  const [mailSending, setMailSending] = useState(false)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,19 +20,29 @@ export default function Login() {
   const msg = useSelector(state => state.auth.msg);
   const error = useSelector(state => state.auth.error);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const mailSent = useSelector(state => state.auth.mailSent);
+  const mailSending = useSelector(state => state.auth.mailSending);
+
+  console.log(isLoading, isAuthenticated);
 
   const Login = () => {
     dispatch(login(userName, password))
   }
 
-  // useEffect(() => {
-  //    if (!isLoading && isAuthenticated) {
-  //     alert(msg)
-  //     navigate('/')
-  //   } else if (!isLoading && error) {
-  //     alert("Wrong Credentials")
-  //   }
-  // }, [isLoading, isAuthenticated])
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    if (!mailSending && mailSent) {
+      alert('Mail has been sent, Please check your email address')
+    }
+    if (!isLoading && isAuthenticated && token) {
+      alert('Login successfull')
+      navigate('/')
+    }
+    if (error) {
+      alert(error)
+    }
+  }, [mailSending, isLoading])
 
   const sendMail = () => {
     if (email == '') {
@@ -87,7 +96,9 @@ export default function Login() {
                 className='outline-none border-b-2 w-full border-[#00AAC3] '
                 placeholder='Enter email' />
               <button
-                className='text-white px-3 py-1 rounded bg-[#00AAC3]' onClick={sendMail} >Send</button>
+                className='text-white px-3 py-1 rounded bg-[#00AAC3] flex justify-center items-center h-10' onClick={sendMail} >
+                {mailSending ? <span className='animate-spin' ><ImSpinner2 /></span> : <span>Send</span>}
+              </button>
             </div>
           }
         </div>

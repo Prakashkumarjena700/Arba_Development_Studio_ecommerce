@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import TermsAndCondition from '../components/TermsAndCondition'
-import Carousel from '../components/Carousel'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts,addingCartCount } from '../redux/Products/productsActions';
+import { fetchProducts, addingCartCount } from '../redux/Products/productsActions';
 import { Link } from 'react-router-dom'
+import HomeCarousel from '../components/HomeCarousel';
+import Loader from '../components/Loader';
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 export default function Home() {
   const products = useSelector(state => state.products.products.slice(0, 8));
   const dispatch = useDispatch();
   const [product, setProduct] = useState({})
   const [count, setCount] = useState(1)
+
+  const isFetching = useSelector(state => state.products.isFetching);
 
 
   useEffect(() => {
@@ -66,27 +70,32 @@ export default function Home() {
   return (
     <div>
       <TermsAndCondition />
-      <Carousel />
-      <div className='grid grid-cols-4 gap-10 p-4 mt-10' >
+      <HomeCarousel />
+      <div className='grid grid-cols-4 gap-20 p-10 ' >
         {
-          products && products.map((ele) =>
-            <div key={ele._id} className='border' >
+          !isFetching && products && products.map((ele) =>
+            <div key={ele._id} className='h-[300px]' >
               <img className='w-full h-[70%]' src={ele.image} alt="" />
-              <div className='border w-[80%] m-auto bg-white shadow-lg p-2 relative bottom-20 z-10 text-left' >
+              <div className='border w-[85%] m-auto bg-white shadow-lg p-2 relative bottom-20 z-10 text-left' >
                 <strong>{ele.title}</strong>
-                <p className='h-14' >{ele.description}</p>
+                <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
                 <div>
                   {product._id !== ele._id && <button onClick={() => AddtoCart(ele)} className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button>}
-                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1' ><span onClick={() => decreaseQty(ele._id)}  >-</span> {count} <span onClick={() => increaseQty(ele._id)} >+</span> </button>}
+                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' ><button disabled={count == 1} onClick={() => decreaseQty(ele._id)} ><FaMinus /></button> <strong className='cursor-text' >{count} </strong><span onClick={() => increaseQty(ele._id)} ><FaPlus /></span> </button>}
                 </div>
               </div>
             </div>
           )
         }
       </div>
+      <div>
+        {
+          isFetching && <Loader />
+        }
+      </div>
       <div className='flex justify-end p-5' >
-        <button className='bg-[#00AAC3] text-white px-5 py-2' ><Link to="/all-products" >{`All Products > > `}</Link></button>
+        <button className='bg-[#00AAC3] text-white px-5 py-2 font-semibold' ><Link to="/all-products" >{`All Products > > `}</Link></button>
       </div>
     </div>
   )

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, editProduct, fetchProducts, deleteProduct, getAllProducts } from '../redux/Products/productsActions';
+import { addProduct, editProduct, fetchProducts, deleteProduct } from '../redux/Products/productsActions';
 import { ImSpinner2 } from "react-icons/im";
 import { CiSearch } from "react-icons/ci";
+import Loader from './Loader';
 
 
 export default function StoreProducts() {
     const dispatch = useDispatch();
+    const isFetching = useSelector(state => state.products.isFetching);
     const isAdding = useSelector(state => state.products.isAdding);
     const isEditing = useSelector(state => state.products.isEditing);
     const isAdded = useSelector(state => state.products.isAdded);
@@ -15,7 +17,6 @@ export default function StoreProducts() {
     const isEdited = useSelector(state => state.products.isEdited);
     const products = useSelector(state => state.products.products);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [name, setName] = useState('');
     const [image, setImage] = useState(null);
     const [slug, setSlug] = useState('')
     const [editModal, setEditModal] = useState(false)
@@ -26,7 +27,7 @@ export default function StoreProducts() {
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('')
     const [short, setShort] = useState('')
-
+    const allCategories = useSelector(state => state.categories.allCategories);
 
     const handleCheckboxChange = (productId) => {
         if (selectedProducts.includes(productId)) {
@@ -44,13 +45,9 @@ export default function StoreProducts() {
 
     const categoryList = useSelector(state => state.categories.categories);
     const categories = useSelector(state => state.categories.categories);
-    const allProducts = useSelector(state => state.products.allProducts);
-
-    console.log(allProducts);
 
     useEffect(() => {
         dispatch(fetchProducts());
-        dispatch(getAllProducts());
     }, [dispatch]);
 
     const handleAddButtonClick = () => {
@@ -60,10 +57,6 @@ export default function StoreProducts() {
 
     const handleModalClose = () => {
         setIsModalOpen(false);
-    };
-
-    const handleNameChange = (e) => {
-        setName(e.target.value);
     };
 
     const handleImageChange = (e) => {
@@ -103,7 +96,6 @@ export default function StoreProducts() {
         }
         if (!isEditing && isEdited) {
             setIsModalOpen(false);
-            setName('');
             setImage(null);
             dispatch(fetchProducts());
         }
@@ -254,8 +246,8 @@ export default function StoreProducts() {
                 filterModal && (
                     <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
                         <div className='bg-white p-9 rounded-lg w-[400px]' >
-                            <p 
-                            className='text-left py-1'
+                            <p
+                                className='text-left py-1'
                             >Search product by name :</p>
                             <div
                                 className='flex'
@@ -276,8 +268,8 @@ export default function StoreProducts() {
                                 </button>
                             </div>
 
-                            <p 
-                            className='text-left my-2'
+                            <p
+                                className='text-left my-2'
                             >Filter:</p>
                             <select
                                 value={filter}
@@ -285,7 +277,7 @@ export default function StoreProducts() {
                             >
                                 <option value="">Select</option>
                                 {
-                                    allProducts?.map((ele) => <option key={ele._id} value={ele.category._id}>{ele.category.name}</option>)
+                                    allCategories?.map((ele) => <option key={ele._id} value={ele._id}>{ele.name}</option>)
                                 }
                             </select>
                             <p className='text-left my-2' htmlFor="">Short:</p>
@@ -349,34 +341,37 @@ export default function StoreProducts() {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(ele => (
-                            <tr
-                                className='border-b-2 border-black'
-                                key={ele._id}>
-                                <td
-                                    className='border border-black'
-                                ><img className='w-16 m-auto' src={ele.image} alt={ele.name} /></td>
-                                <td
-                                    className='border-2 border-black'
-                                >{ele.title}</td>
-                                <td className='border-2 border-black' >{ele.slug}</td>
-                                <td className='border-2 border-black' >
-                                    <button
-                                        onClick={() => editProd(ele)}
-                                    >Edit</button></td>
-                                <td className='border-2 border-black'>
-                                    <input
-                                        type="checkbox"
-                                        value={product._id}
-                                        checked={selectedProducts.includes(ele._id)}
-                                        onChange={() => handleCheckboxChange(ele._id)}
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                        {!isFetching &&
+                            products && products.map(ele => (
+                                <tr
+                                    className='border-b-2 border-black'
+                                    key={ele._id}>
+                                    <td
+                                        className='border border-black'
+                                    ><img className='w-16 m-auto' src={ele.image} alt={ele.name} /></td>
+                                    <td
+                                        className='border-2 border-black'
+                                    >{ele.title}</td>
+                                    <td className='border-2 border-black' >{ele.slug}</td>
+                                    <td className='border-2 border-black' >
+                                        <button
+                                            onClick={() => editProd(ele)}
+                                        >Edit</button></td>
+                                    <td className='border-2 border-black'>
+                                        <input
+                                            type="checkbox"
+                                            value={product._id}
+                                            checked={selectedProducts.includes(ele._id)}
+                                            onChange={() => handleCheckboxChange(ele._id)}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
-
+                {
+                    isFetching && <Loader />
+                }
             </div>
         </div >
     );
