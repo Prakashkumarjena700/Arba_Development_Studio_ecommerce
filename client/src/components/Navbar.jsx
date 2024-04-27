@@ -19,11 +19,11 @@ export default function Navbar() {
     };
 
     const logOut = () => {
+        dispatch(addingCartCount(0));
         localStorage.removeItem('user')
         localStorage.removeItem('token')
         localStorage.removeItem('cart')
         localStorage.removeItem('hasAcceptedTerms')
-        dispatch(addingCartCount(0));
         navigate('/login')
     }
 

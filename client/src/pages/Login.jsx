@@ -26,20 +26,20 @@ export default function Login() {
     dispatch(login(userName, password))
   }
 
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      alert(msg)
-      navigate('/')
-    } else if (!isLoading && error) {
-      alert("Wrong Credentials")
-    }
-  }, [isLoading, isAuthenticated])
+  // useEffect(() => {
+  //    if (!isLoading && isAuthenticated) {
+  //     alert(msg)
+  //     navigate('/')
+  //   } else if (!isLoading && error) {
+  //     alert("Wrong Credentials")
+  //   }
+  // }, [isLoading, isAuthenticated])
 
   const sendMail = () => {
     if (email == '') {
       alert('Please fill your email address')
     } else {
-      dispatch(sendingMailForResetPassword({ email, authToken: 'asfasfahsfkhahfs' }))
+      dispatch(sendingMailForResetPassword({ email }))
     }
   }
 

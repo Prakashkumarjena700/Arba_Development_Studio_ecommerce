@@ -2,15 +2,14 @@ import { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess,
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-export const sendingMailForResetPassword = (email, authToken) => async (dispatch) => {
+export const sendingMailForResetPassword = (email) => async (dispatch) => {
     dispatch(mailSending())
     try {
         fetch(`${baseUrl}/users/forgot-password`, {
             method: 'POST',
-            body: JSON.stringify({ email, authToken }),
+            body: JSON.stringify(email),
             headers: {
-                'Content-type': 'application/json',
-                'Authorization': localStorage.getItem('token')
+                'Content-Type': 'application/json',
             }
         }).then(res => res.json())
             .then(res => {
