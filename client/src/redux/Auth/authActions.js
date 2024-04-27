@@ -1,6 +1,26 @@
-import { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess, registerFailure } from './authSlice';
+import { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess, registerFailure, mailSending, mailSentSuccess, mailSentFailure } from './authSlice';
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
+
+export const sendingMailForResetPassword = (email, authToken) => async (dispatch) => {
+    dispatch(mailSending())
+    try {
+        fetch(`${baseUrl}/users/forgot-password`, {
+            method: 'POST',
+            body: JSON.stringify({ email, authToken }),
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => console.log(err))
+    } catch (err) {
+        dispatch(mailSentFailure())
+    }
+}
 
 export const login = (userName, password) => async (dispatch) => {
     dispatch(loginStart());

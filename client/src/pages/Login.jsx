@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/Auth/authActions';
+import { login, sendingMailForResetPassword } from '../redux/Auth/authActions';
 import { Link, useNavigate } from 'react-router-dom';
 import { HiEyeOff, HiEye } from "react-icons/hi";
 import loginBg from '../assets/signup_login_bg.png'
@@ -10,6 +10,9 @@ export default function Login() {
   const [userName, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showForgetPass, setShowForgetPass] = useState(false)
+  const [email, setEmail] = useState('')
+  const [mailSending, setMailSending] = useState(false)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,6 +34,14 @@ export default function Login() {
       alert("Wrong Credentials")
     }
   }, [isLoading, isAuthenticated])
+
+  const sendMail = () => {
+    if (email == '') {
+      alert('Please fill your email address')
+    } else {
+      dispatch(sendingMailForResetPassword({ email, authToken: 'asfasfahsfkhahfs' }))
+    }
+  }
 
   return (
     <div className='flex px-5 gap-8' >
@@ -63,8 +74,22 @@ export default function Login() {
             onClick={Login} >
             {isLoading ? <span className='animate-spin' ><ImSpinner2 /></span> : <span>Login</span>}
           </button>
-
-          <p className='mt-4' >Don't have an account? <Link to="/signup" className='text-[#00AAC3]' >Sign up</Link></p>
+          <p className='mt-4' >Don't have an account? <Link to="/signup" className='text-[#00AAC3] font-semibold' >Sign up</Link></p>
+          <p className='font-semibold text-[#00AAC3] mt-2 cursor-pointer' onClick={() => setShowForgetPass(!showForgetPass)} >Forget Password</p>
+          {
+            showForgetPass &&
+            <div
+              className='flex gap-2 mt-4'
+            >
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                className='outline-none border-b-2 w-full border-[#00AAC3] '
+                placeholder='Enter email' />
+              <button
+                className='text-white px-3 py-1 rounded bg-[#00AAC3]' onClick={sendMail} >Send</button>
+            </div>
+          }
         </div>
       </div>
     </div>

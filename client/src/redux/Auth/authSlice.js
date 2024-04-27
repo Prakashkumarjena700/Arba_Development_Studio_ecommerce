@@ -7,7 +7,10 @@ const initialState = {
   token: null,
   loading: false,
   error: null,
-  msg: null
+  msg: null,
+  mailSending: false,
+  mailSent: false,
+  mailSentRes: ''
 };
 
 const authSlice = createSlice({
@@ -42,8 +45,20 @@ const authSlice = createSlice({
       state.isRegister = false;
       state.error = action.payload;
     },
+    mailSending(state) {
+      state.mailSending = true
+    },
+    mailSentSuccess(state, action) {
+      state.mailSending = false
+      state.mailSent = true
+      state.mailSentRes = action.payload
+    },
+    mailSentFailure(state) {
+      state.mailSending = false
+      state.mailSent = false
+    }
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess, registerFailure } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, registerStart, registerSuccess, registerFailure, mailSending, mailSentSuccess, mailSentFailure } = authSlice.actions;
 export default authSlice.reducer;
