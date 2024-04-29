@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { ImSpinner2 } from "react-icons/im";
 import TermsAndCondition from '../components/TermsAndCondition';
 import { HiEyeOff, HiEye } from "react-icons/hi";
+import Navbar from '../components/Navbar';
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -110,6 +111,8 @@ const Profile = () => {
 
   return (
     <div>
+      <Navbar />
+
       <div className='flex justify-center items-center flex-col'>
         <div>
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />

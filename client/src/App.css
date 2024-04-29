@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+
+.center .slick-center {
+  transform: scale(1.1);
+  transition: all 700ms;
+}

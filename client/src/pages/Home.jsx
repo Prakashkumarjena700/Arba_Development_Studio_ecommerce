@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import HomeCarousel from '../components/HomeCarousel';
 import Loader from '../components/Loader';
 import { FaMinus, FaPlus } from "react-icons/fa";
+import Navbar from '../components/Navbar';
 
 export default function Home() {
   const products = useSelector(state => state.products.products.slice(0, 8));
@@ -70,6 +71,7 @@ export default function Home() {
   return (
     <div>
       <TermsAndCondition />
+      <Navbar />
       <HomeCarousel />
       <div className='grid grid-cols-4 gap-20 p-10 ' >
         {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 export default function Cart() {
   const products = JSON.parse(localStorage.getItem('cart'))
@@ -32,10 +33,10 @@ export default function Cart() {
     }
   };
 
-  console.log(products);
-
   return (
     <div>
+      <Navbar />
+
       <div className='grid grid-cols-4 gap-20 p-10' >
         {
           products && products.map((ele) =>

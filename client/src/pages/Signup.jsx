@@ -51,12 +51,12 @@ export default function Signup() {
   }, [isLoading, isRegister])
 
   return (
-    <div className='flex px-5 gap-8' >
-      <div className='w-1/2  flex justify-end h-[500px]' >
-        <img src={loginBg} alt="" className='w-1/2' />
+    <div className='grid gap-8 grid-cols-2' >
+      <div >
+        <img src={loginBg} alt="" className='w-full h-[99.9vh]' />
       </div>
-      <div className='w-1/2  flex justify-start items-start' >
-        <div>
+      <div className='flex justify-center items-center' >
+        <div className='w-[60%]' >
           <div className=' flex justify-center items-center flex-col ' >
             <div className='border h-16 w-16 bg-[#00AAC3] rounded-full' ></div>
             <h2 className='font-bold text-lg' >ShopeZ</h2>
