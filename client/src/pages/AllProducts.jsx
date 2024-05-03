@@ -5,6 +5,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import Loader from '../components/Loader';
 import { CiSearch } from "react-icons/ci";
 import { getAllcategories } from '../redux/Categories/categoriesActions';
+import Navbar from '../components/Navbar';
 
 export default function AllProducts() {
   const products = useSelector(state => state.products.products);
@@ -75,6 +76,7 @@ export default function AllProducts() {
 
   return (
     <div>
+      <Navbar/>
       <div className='fixed top-5 border-b-2 border-[#00AAC3] z-50 flex w-[60%] justify-start h-10 left-40'  >
         <button
           className='bg-[#00AAC3] text-white py-1 px-3 '
