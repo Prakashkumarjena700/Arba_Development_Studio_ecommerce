@@ -32,9 +32,7 @@ export default function AllProducts() {
 
   const AddtoCart = (ele) => {
     setProduct(ele)
-
     const existingProductIndex = cart.findIndex(item => item._id == ele._id);
-
     if (existingProductIndex == -1) {
       const newEle = { ...ele, qty: 1 };
       let newArray = [...cart, newEle]
@@ -54,7 +52,11 @@ export default function AllProducts() {
     const index = cartItems.findIndex(item => item._id === id);
 
     if (index !== -1) {
-      if (cartItems[index].qty > 1) {
+
+      if (cartItems[index].qty == 1) {
+        cartItems.splice(index, 1)
+        localStorage.setItem('cart', JSON.stringify(cartItems))
+      } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
       localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -64,7 +66,6 @@ export default function AllProducts() {
 
   const increaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
 
     if (index !== -1) {
@@ -74,9 +75,20 @@ export default function AllProducts() {
     }
   };
 
+  const GetQty = (id) => {
+    let checkCart = cart?.filter((ele) => {
+      return ele._id == id
+    })
+    if (checkCart?.length > 0) {
+      return checkCart[0].qty;
+    } else {
+      return 0;
+    }
+  }
+
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className='fixed top-5 border-b-2 border-[#00AAC3] z-50 flex w-[60%] justify-start h-10 left-40'  >
         <button
           className='bg-[#00AAC3] text-white py-1 px-3 '
@@ -87,7 +99,7 @@ export default function AllProducts() {
             setSearch('')
             dispatch(fetchProducts())
           }
-          } >Clar</button>
+          } >Clear</button>
         <div>
           <select
             value={short}
@@ -117,8 +129,8 @@ export default function AllProducts() {
             }
 
           >
-            <option value="">Short</option>
-            <option value="ltoh">Price Low to Hight</option>
+            <option value="">Sort</option>
+            <option value="ltoh">Price Low to High</option>
             <option value="htol">Price High to Low</option>
           </select>
         </div>
@@ -163,8 +175,16 @@ export default function AllProducts() {
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
                 <div>
-                  {product._id !== ele._id && <button onClick={() => AddtoCart(ele)} className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button>}
-                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' ><button disabled={count == 1} onClick={() => decreaseQty(ele._id)}  ><FaMinus /></button> <strong>{count}</strong> <span onClick={() => increaseQty(ele._id)} ><FaPlus /></span> </button>}
+                
+                  {(!GetQty(ele._id)) ? <button
+                    onClick={() => AddtoCart(ele)} 
+                    className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button> :
+                    <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' >
+                      <button onClick={() => decreaseQty(ele._id)}  ><FaMinus /></button>
+                      <strong>{GetQty(ele._id)}</strong>
+                      <span
+                        onClick={() => increaseQty(ele._id)}
+                      ><FaPlus /></span> </button>}
                 </div>
               </div>
             </div>

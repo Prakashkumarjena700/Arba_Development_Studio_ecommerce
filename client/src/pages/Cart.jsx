@@ -13,7 +13,10 @@ export default function Cart() {
     const index = cartItems.findIndex(item => item._id === id);
 
     if (index !== -1) {
-      if (cartItems[index].qty > 1) {
+      if (cartItems[index].qty == 1) {
+        cartItems.splice(index,1)
+        localStorage.setItem('cart',JSON.stringify(cartItems))
+      } if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
       localStorage.setItem('cart', JSON.stringify(cartItems));
