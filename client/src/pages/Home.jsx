@@ -11,11 +11,8 @@ import Navbar from '../components/Navbar';
 export default function Home() {
   const products = useSelector(state => state.products.products.slice(0, 8));
   const dispatch = useDispatch();
-  const [product, setProduct] = useState({})
   const [count, setCount] = useState(1)
-
   const isFetching = useSelector(state => state.products.isFetching);
-
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -23,12 +20,8 @@ export default function Home() {
 
 
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
   const AddtoCart = (ele) => {
-    setProduct(ele)
-
     const existingProductIndex = cart.findIndex(item => item._id == ele._id);
-
     if (existingProductIndex == -1) {
       const newEle = { ...ele, qty: 1 };
       let newArray = [...cart, newEle]
@@ -38,16 +31,17 @@ export default function Home() {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)
     }
-
   }
 
   const decreaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
-
     if (index !== -1) {
-      if (cartItems[index].qty > 1) {
+      if (cartItems[index].qty == 1) {
+        cartItems.splice(index, 1)
+        localStorage.setItem('cart', JSON.stringify(cartItems))
+        dispatch(addingCartCount(cartItems.length));
+      } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
       localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -57,9 +51,7 @@ export default function Home() {
 
   const increaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
-
     if (index !== -1) {
       cartItems[index].qty += 1;
       localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -67,6 +59,16 @@ export default function Home() {
     }
   };
 
+  const GetQty = (id) => {
+    let checkCart = cart?.filter((ele) => {
+      return ele._id == id
+    })
+    if (checkCart?.length > 0) {
+      return checkCart[0].qty;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <div>
@@ -83,8 +85,18 @@ export default function Home() {
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
                 <div>
-                  {product._id !== ele._id && <button onClick={() => AddtoCart(ele)} className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button>}
-                  {product._id == ele._id && <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' ><button disabled={count == 1} onClick={() => decreaseQty(ele._id)} ><FaMinus /></button> <strong className='cursor-text' >{count} </strong><span onClick={() => increaseQty(ele._id)} ><FaPlus /></span> </button>}
+                  {(!GetQty(ele._id)) ?
+                    <button
+                      onClick={() => AddtoCart(ele)}
+                      className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart
+                    </button> :
+                    <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' >
+                      <span onClick={() => decreaseQty(ele._id)}  ><FaMinus /></span>
+                      <strong>{GetQty(ele._id)}</strong>
+                      <span
+                        onClick={() => increaseQty(ele._id)}
+                      ><FaPlus /></span>
+                    </button>}
                 </div>
               </div>
             </div>

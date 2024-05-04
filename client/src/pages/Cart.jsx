@@ -2,44 +2,39 @@ import React, { useState } from 'react'
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useDispatch } from 'react-redux';
+import { addingCartCount } from '../redux/Products/productsActions';
 
 export default function Cart() {
-  const products = JSON.parse(localStorage.getItem('cart'))
-  const [count, setCount] = useState(1)
+  const productsFromLS = JSON.parse(localStorage.getItem('cart')) || []
+  const [products, setProducts] = useState(productsFromLS)
+  const dispatch = useDispatch();
 
   const decreaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
-
-    if (index !== -1) {
-      if (cartItems[index].qty == 1) {
-        cartItems.splice(index,1)
-        localStorage.setItem('cart',JSON.stringify(cartItems))
-      } if (cartItems[index].qty > 1) {
-        cartItems[index].qty -= 1;
-      }
+    if (cartItems[index]?.qty == 1) {
+      cartItems.splice(index, 1)
+      dispatch(addingCartCount(cartItems.length));
+      localStorage.setItem('cart', JSON.stringify(cartItems))
+    } else if (cartItems[index].qty > 1) {
+      cartItems[index].qty -= 1;
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      setCount(count - 1)
     }
+    setProducts(cartItems)
   };
 
   const increaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
-
-    if (index !== -1) {
-      cartItems[index].qty += 1;
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-      setCount(count + 1)
-    }
+    cartItems[index].qty = cartItems[index].qty + 1
+    setProducts(cartItems)
+    localStorage.setItem('cart', JSON.stringify(cartItems));
   };
 
   return (
     <div>
       <Navbar />
-
       <div className='grid grid-cols-4 gap-20 p-10' >
         {
           products && products.map((ele) =>

@@ -38,7 +38,6 @@ export default function AllProducts() {
       let newArray = [...cart, newEle]
       localStorage.setItem('cart', JSON.stringify(newArray))
       dispatch(addingCartCount(newArray.length));
-
     } else {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)
@@ -56,6 +55,7 @@ export default function AllProducts() {
       if (cartItems[index].qty == 1) {
         cartItems.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(cartItems))
+        dispatch(addingCartCount(cartItems.length));
       } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
@@ -175,7 +175,6 @@ export default function AllProducts() {
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
                 <div>
-                
                   {(!GetQty(ele._id)) ? <button
                     onClick={() => AddtoCart(ele)} 
                     className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button> :
