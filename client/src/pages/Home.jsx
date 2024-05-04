@@ -10,6 +10,7 @@ import Navbar from '../components/Navbar';
 
 export default function Home() {
   const products = useSelector(state => state.products.products.slice(0, 8));
+
   const dispatch = useDispatch();
   const [count, setCount] = useState(1)
   const isFetching = useSelector(state => state.products.isFetching);
@@ -41,6 +42,7 @@ export default function Home() {
         cartItems.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(cartItems))
         dispatch(addingCartCount(cartItems.length));
+        dispatch(fetchProducts());
       } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }

@@ -42,20 +42,17 @@ export default function AllProducts() {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)
     }
-
   }
 
   const decreaseQty = (id) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     const index = cartItems.findIndex(item => item._id === id);
-
     if (index !== -1) {
-
       if (cartItems[index].qty == 1) {
         cartItems.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(cartItems))
         dispatch(addingCartCount(cartItems.length));
+        dispatch(fetchProducts());
       } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
@@ -141,7 +138,7 @@ export default function AllProducts() {
               setFilter(e.target.value)
               dispatch(fetchProducts(search, e.target.value, short, order))
             }}
-            className=' w-full cursor-pointer p-2 outline-none'
+            className=' w-full cursor-pointer p-2 px-4 outline-none'
           >
             <option value="">Category</option>
             {

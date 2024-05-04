@@ -24,15 +24,11 @@ export default function StoreCategories() {
     const [confModal, setConfModal] = useState(false)
     const [filterModal, setFilterModal] = useState(false)
 
-    console.log(allCategories);
-
     useEffect(() => {
         dispatch(fetchCategories(name));
+        dispatch(getAllcategories())
     }, []);
 
-    useEffect(() => {
-        dispatch(getAllcategories())
-    }, [])
 
     const handleAddButtonClick = () => {
         setEditModal(false)
@@ -106,7 +102,7 @@ export default function StoreCategories() {
             <div className='flex gap-3 mt-3'>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={handleAddButtonClick}>Add</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => setFilterModal(true)}>Filter</button>
-                <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
+                <button className='bg-[#00AAC3] text-white px-3' onClick={() => dispatch(fetchCategories(''))}>Refresh</button>
             </div>
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

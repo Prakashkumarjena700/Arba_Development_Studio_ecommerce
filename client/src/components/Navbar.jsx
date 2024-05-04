@@ -8,10 +8,7 @@ export default function Navbar() {
 
     const user = JSON.parse(localStorage.getItem('user'))
     const dispatch = useDispatch();
-
     const cartVal = useSelector(state => state.products.cartCount);
-
-
     const navigate = useNavigate()
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
@@ -30,9 +27,7 @@ export default function Navbar() {
         <nav className='flex justify-between p-4 sticky top-0 z-50 bg-white'>
             <div onClick={() => navigate('/')} className='cursor-pointer font-bold z-50 ' ><h2 className='text-[30px] text-[#00AAC3]' >ShopeZ</h2></div>
             <div className='relative'>
-                <div className='flex items-center gap-4 '
-
-                >
+                <div className='flex items-center gap-4 '>
                     <div className='flex cursor-pointer' onClick={() => navigate('/cart')} >
                         <PiShoppingCartFill className='text-[30px] text-[#00AAC3]' />
                         <p className='border absolute bottom-6 left-5 px-1.5 rounded-full bg-green-500 text-white' >{cartVal}</p>

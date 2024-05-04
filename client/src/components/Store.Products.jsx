@@ -126,10 +126,9 @@ export default function StoreProducts() {
             <div className='flex gap-3 mt-3'>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={handleAddButtonClick}>Add</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => setFilterModal(true)} >Filter</button>
-                <button className='bg-[#00AAC3] text-white px-3' onClick={() => window.location.reload()}>Refresh</button>
+                <button className='bg-[#00AAC3] text-white px-3' onClick={() => dispatch(fetchProducts())}>Refresh</button>
                 {selectedProducts.length > 0 && (
                     <button className="bg-red-500 text-white px-2 rounded absolute right-2 mb-3" onClick={() => setConfModal(true)}>Delete Selected</button>
-
                 )}
             </div>
 
