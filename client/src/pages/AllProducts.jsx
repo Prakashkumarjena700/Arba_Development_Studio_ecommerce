@@ -6,6 +6,10 @@ import Loader from '../components/Loader';
 import { CiSearch } from "react-icons/ci";
 import { getAllcategories } from '../redux/Categories/categoriesActions';
 import Navbar from '../components/Navbar';
+import ProductLoader from '../components/ProductLoader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { motion } from 'framer-motion'
 
 export default function AllProducts() {
   const products = useSelector(state => state.products.products);
@@ -38,6 +42,7 @@ export default function AllProducts() {
       let newArray = [...cart, newEle]
       localStorage.setItem('cart', JSON.stringify(newArray))
       dispatch(addingCartCount(newArray.length));
+      toast.success('Product has been added')
     } else {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)
@@ -52,7 +57,7 @@ export default function AllProducts() {
         cartItems.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(cartItems))
         dispatch(addingCartCount(cartItems.length));
-        dispatch(fetchProducts());
+        // dispatch(fetchProducts());
       } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
@@ -85,8 +90,9 @@ export default function AllProducts() {
 
   return (
     <div>
+      <ToastContainer/>
       <Navbar />
-      <div className='fixed top-5 border-b-2 border-[#00AAC3] z-50 flex w-[60%] justify-start h-10 left-40'  >
+      <div className='fixed top-6 border-b-2 border-[#00AAC3] z-50 lg:flex md:flex hidden w-[60%] justify-start h-10 md:left-[200px] lg:left-[300px]' >
         <button
           className='bg-[#00AAC3] text-white py-1 px-3 '
           onClick={() => {
@@ -131,7 +137,7 @@ export default function AllProducts() {
             <option value="htol">Price High to Low</option>
           </select>
         </div>
-        <div className='' >
+        <div className='lg:w-[200px]' >
           <select
             value={filter}
             onChange={(e) => {
@@ -147,7 +153,7 @@ export default function AllProducts() {
           </select>
         </div>
 
-        <div className='flex w-[63%]'>
+        <div className='flex w-[50%]'>
           <input
             className='w-full px-2 outline-none pl-5'
             type="text"
@@ -162,7 +168,7 @@ export default function AllProducts() {
           </button>
         </div>
       </div>
-      <div className='grid grid-cols-4 gap-20 p-10 ' >
+      <div className='grid lg:grid-cols-4  md:grid-cols-3 grid-cols-1 gap-20 p-10 ' >
         {!isFetching &&
           products && products.map((ele) =>
             <div key={ele._id} className='h-[300px]' >
@@ -171,17 +177,23 @@ export default function AllProducts() {
                 <strong>{ele.title}</strong>
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
-                <div>
-                  {(!GetQty(ele._id)) ? <button
-                    onClick={() => AddtoCart(ele)} 
-                    className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart</button> :
+                <motion.div
+                  whileTap={{ scale: 1.1 }}
+                >
+                  {(!GetQty(ele._id)) ?
+                    <button
+                      onClick={() => AddtoCart(ele)}
+                      className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart
+                    </button> :
                     <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' >
-                      <button onClick={() => decreaseQty(ele._id)}  ><FaMinus /></button>
-                      <strong>{GetQty(ele._id)}</strong>
+                      <span onClick={() => decreaseQty(ele._id)} className='px-3 py-1' ><FaMinus /></span>
+                      <strong >{GetQty(ele._id)}</strong>
                       <span
                         onClick={() => increaseQty(ele._id)}
-                      ><FaPlus /></span> </button>}
-                </div>
+                        className=' px-3 py-1'
+                      ><FaPlus /></span>
+                    </button>}
+                </motion.div>
               </div>
             </div>
           )
@@ -189,7 +201,7 @@ export default function AllProducts() {
       </div>
       <div>
         {
-          isFetching && <Loader />
+          isFetching && <ProductLoader />
         }
       </div>
     </div>

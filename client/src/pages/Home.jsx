@@ -4,9 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, addingCartCount } from '../redux/Products/productsActions';
 import { Link } from 'react-router-dom'
 import HomeCarousel from '../components/HomeCarousel';
-import Loader from '../components/Loader';
 import { FaMinus, FaPlus } from "react-icons/fa";
 import Navbar from '../components/Navbar';
+import ProductLoader from '../components/ProductLoader';
+import { motion } from 'framer-motion'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { LuChevronsRight } from "react-icons/lu";
+
 
 export default function Home() {
   const products = useSelector(state => state.products.products.slice(0, 8));
@@ -28,6 +33,7 @@ export default function Home() {
       let newArray = [...cart, newEle]
       localStorage.setItem('cart', JSON.stringify(newArray))
       dispatch(addingCartCount(newArray.length));
+      toast.success('Product has been added')
     } else {
       let currentQty = cart[existingProductIndex];
       setCount(currentQty.qty)
@@ -42,7 +48,7 @@ export default function Home() {
         cartItems.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(cartItems))
         dispatch(addingCartCount(cartItems.length));
-        dispatch(fetchProducts());
+        // dispatch(fetchProducts());
       } else if (cartItems[index].qty > 1) {
         cartItems[index].qty -= 1;
       }
@@ -74,10 +80,11 @@ export default function Home() {
 
   return (
     <div>
+      <ToastContainer />
       <TermsAndCondition />
       <Navbar />
       <HomeCarousel />
-      <div className='grid grid-cols-4 gap-20 p-10 ' >
+      <div className='grid lg:grid-cols-4  md:grid-cols-3 grid-cols-1 gap-20 p-10 ' >
         {
           !isFetching && products && products.map((ele) =>
             <div key={ele._id} className='h-[300px]' >
@@ -86,20 +93,23 @@ export default function Home() {
                 <strong>{ele.title}</strong>
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
                 <p className='text-[#00AAC3]' >Rs. {ele.price}</p>
-                <div>
+                <motion.div
+                  whileTap={{ scale: 1.1 }}
+                >
                   {(!GetQty(ele._id)) ?
                     <button
                       onClick={() => AddtoCart(ele)}
                       className='bg-[#00AAC3] text-white w-full py-1 mt-1' >Add to cart
                     </button> :
                     <button className='bg-[#00AAC3] text-white w-full py-1 mt-1 flex items-center justify-evenly' >
-                      <span onClick={() => decreaseQty(ele._id)}  ><FaMinus /></span>
-                      <strong>{GetQty(ele._id)}</strong>
+                      <span onClick={() => decreaseQty(ele._id)} className='px-3 py-1' ><FaMinus /></span>
+                      <strong >{GetQty(ele._id)}</strong>
                       <span
                         onClick={() => increaseQty(ele._id)}
+                        className=' px-3 py-1'
                       ><FaPlus /></span>
                     </button>}
-                </div>
+                </motion.div>
               </div>
             </div>
           )
@@ -107,11 +117,16 @@ export default function Home() {
       </div>
       <div>
         {
-          isFetching && <Loader />
+          isFetching && <ProductLoader />
         }
       </div>
-      <div className='flex justify-end p-5' >
-        <button className='bg-[#00AAC3] text-white px-5 py-2 font-semibold' ><Link to="/all-products" >{`All Products > > `}</Link></button>
+
+
+      <div
+        className=' flex justify-end p-10' >
+        <button className='bg-[#00AAC3] text-white px-5 py-2 font-semibold' >
+          <Link to="/all-products" className='flex gap-2 items-center' > All Products  <LuChevronsRight /> </Link>
+        </button>
       </div>
     </div>
   )

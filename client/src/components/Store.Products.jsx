@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProduct, editProduct, fetchProducts, deleteProduct } from '../redux/Products/productsActions';
 import { ImSpinner2 } from "react-icons/im";
 import { CiSearch } from "react-icons/ci";
-import Loader from './Loader';
+import TableLoader from './TableLoader';
+import { motion } from 'framer-motion'
+import { Input } from "@material-tailwind/react";
+import { Select, Option, Checkbox } from "@material-tailwind/react";
 
 
 export default function StoreProducts() {
@@ -36,7 +39,6 @@ export default function StoreProducts() {
             setSelectedProducts([...selectedProducts, productId]);
         }
     };
-
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -128,73 +130,40 @@ export default function StoreProducts() {
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => setFilterModal(true)} >Filter</button>
                 <button className='bg-[#00AAC3] text-white px-3' onClick={() => dispatch(fetchProducts())}>Refresh</button>
                 {selectedProducts.length > 0 && (
-                    <button className="bg-red-500 text-white px-2 rounded absolute right-2 mb-3" onClick={() => setConfModal(true)}>Delete Selected</button>
+                    <motion.button whileInView={{ scale: 1.1 }} className="text-sm bg-red-500 text-white px-3 py-1  absolute right-6 mb-3" onClick={() => setConfModal(true)}>Delete Selected</motion.button>
                 )}
             </div>
 
-
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded-lg w-[40%]">
+                    <motion.div
+                        whileInView={{ scale: 1.1 }}
+                        className="bg-white p-6 lg:w-[40%] md:w-[50%] w-[70%]">
                         <h2 className="text-xl font-semibold mb-2">{editModal ? 'Edit' : 'Add'} Product</h2>
                         <form onSubmit={handleFormSubmit}>
                             <div className="mb-4">
-                                <input
-                                    type="text"
-                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] mt-6"
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    value={title}
-                                    required
-                                    placeholder='Enter product title'
-                                />
+                                <Input required value={title} color='cyan' variant="standard" label="Product title" placeholder="Enter product title" onChange={(e) => setTitle(e.target.value)} />
                             </div>
                             <div className="mb-4">
-                                <input
-                                    type="text"
-                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3]"
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    value={description}
-                                    required
-                                    placeholder='Enter product description'
-                                />
+                                <Input required value={description} color='cyan' variant="standard" label="Product description" placeholder="Enter product description" onChange={(e) => setDescription(e.target.value)} />
                             </div>
                             <div className="mb-4">
-                                <input
-                                    type="number"
-                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3]"
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    value={price}
-                                    required
-                                    placeholder='0.00'
-                                />
+                                <Input type='number' required value={price} color='cyan' variant="standard" label="Product price" placeholder="0.00" onChange={(e) => setPrice(e.target.value)} />
                             </div>
                             <div>
-                                <select
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
-                                    className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] text-gray-400 cursor-pointer"
-                                >
-                                    <option value="">Select category</option>
+                                <Select required value={category} color="cyan" onChange={(val) => setCategory(val)} variant="standard" label="Select Category">
                                     {
-                                        categoryList && categories.map((ele) => (
-                                            <option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>
-                                        ))
-
+                                        categoryList?.map((ele) =>
+                                            <Option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</Option>
+                                        )
                                     }
-                                </select>
-                            </div>
+                                </Select>
 
+                            </div>
                             {
                                 editModal &&
-                                <div className="mb-4">
-                                    <input
-                                        type="text"
-                                        placeholder='Enter slug'
-                                        required
-                                        value={slug}
-                                        className=" px-3 py-2 outline-none border-b-2 w-full border-[#00AAC3] "
-                                        onChange={(e) => setSlug(e.target.value)}
-                                    />
+                                <div className="my-4">
+                                    <Input type='text' value={slug} color='cyan' variant="standard" label="Product slug" placeholder="Enter productslug" onChange={(e) => setSlug(e.target.value)} />
                                 </div>
                             }
                             {
@@ -218,15 +187,15 @@ export default function StoreProducts() {
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    </motion.div>
                 </div>
             )}
 
             {
                 confModal && (
-                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50' >
-                        <div className='bg-white p-9 rounded-lg' >
-                            <p>Are you sure you want to delete checked products ?</p>
+                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50' >
+                        <motion.div whileInView={{ scale: 1.1 }} className='bg-white p-9 lg:w-[40%] md:w-[50%] w-[70%]'  >
+                            <p>Are you sure you want to delete checked product ?</p>
                             <br />
                             <div className="flex justify-center gap-4">
                                 <button className="mr-2 px-4 py-1 bg-[#00AAC3] text-white rounded " onClick={() => setConfModal(false)}>Cancel</button>
@@ -234,7 +203,7 @@ export default function StoreProducts() {
                                     {isDeleting ? <span className='animate-spin' ><ImSpinner2 /></span> : <span>Delete</span>}
                                 </button>
                             </div>
-                        </div>
+                        </motion.div>
 
 
                     </div>
@@ -243,19 +212,11 @@ export default function StoreProducts() {
 
             {
                 filterModal && (
-                    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ' >
-                        <div className='bg-white p-9 rounded-lg w-[400px]' >
-                            <p
-                                className='text-left py-1'
-                            >Search product by name :</p>
-                            <div
-                                className='flex'
-                            >
-                                <input
-                                    className='w-full border-b-2 border-[#00AAC3] px-2 outline-none'
-                                    type="text"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)} placeholder='Search...' />
+                    <div className='fixed inset-0 flex items-center justify-center bg-black z-50 bg-opacity-50 ' >
+                        <motion.div whileInView={{ scale: 1.1 }} className='bg-white p-9 lg:w-[40%] md:w-[50%] w-[70%]' >
+                            <h2 className='text-xl font-bold' > Search/ Filter / Sort</h2>
+                            <div className='flex'>
+                                <Input value={search} color='cyan' variant="standard" label="Search by name" placeholder="Search..." onChange={(e) => setSearch(e.target.value)} />
                                 <button
                                     className=' font-semibold bg-[#00AAC3] text-white px-4 py-2  '
                                     onClick={() => {
@@ -266,29 +227,20 @@ export default function StoreProducts() {
                                 ><CiSearch />
                                 </button>
                             </div>
-
                             <div className='my-4' >
-                                <p
-                                    className='text-left mt-2'
-                                >Filter by category:</p>
-                                <select
-                                    value={filter}
-                                    onChange={(e) => setFilter(e.target.value)} className='border-b-2 border-[#00AAC3] w-full cursor-pointer p-2 outline-none'
-                                >
-                                    <option value="">Select</option>
+                                <Select value={filter} color="cyan" onChange={(val) => setFilter(val)} variant="standard" label="Filter by category">
                                     {
-                                        allCategories?.map((ele) => <option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</option>)
+                                        allCategories?.map((ele) =>
+                                            <Option key={ele._id} value={ele._id}>{ele.name && ele.name.charAt(0).toUpperCase() + ele.name.slice(1)}</Option>
+                                        )
                                     }
-                                </select>
+                                </Select>
+
                             </div>
-                            <p className='text-left mt-2' htmlFor="">Short:</p>
-                            <select onChange={(e) => setShort(e.target.value)} className='border-b-2 border-[#00AAC3] w-full cursor-pointer p-2 outline-none'
-                                value={short}
-                            >
-                                <option value="">Select</option>
-                                <option value="ltoh">Price Low to Hight</option>
-                                <option value="htol">Price High to Low</option>
-                            </select>
+                            <Select value={filter} color="cyan" onChange={(val) => setShort(val)} variant="standard" label="Sort by price">
+                                <Option value="ltoh">Price Low to High</Option>
+                                <Option value="htol">Price High to Low</Option>
+                            </Select>
 
                             <br />
                             <div className="flex justify-center gap-4 mt-6">
@@ -320,19 +272,15 @@ export default function StoreProducts() {
 
                                 >Apply</button>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
                 )
             }
 
             <div>
-                <table
-                    className='m-auto w-full mt-3'
-                >
-                    <thead
-                        className='border-2 border-black text-white bg-blue-500'
-                    >
-                        <tr  >
+                <table className='m-auto w-full mt-3'>
+                    <thead className='border-2 border-black text-white bg-blue-500'>
+                        <tr >
                             <th className='border-2 border-black py-2 '  >Image</th>
                             <th className='border-2 border-black'  >Name</th>
                             <th className='border-2 border-black'  >Slug</th>
@@ -348,7 +296,7 @@ export default function StoreProducts() {
                                     key={ele._id}>
                                     <td
                                         className='border border-black'
-                                    ><img className='w-16 m-auto' src={ele.image} alt={ele.name} /></td>
+                                    ><img className='w-16 h-16 m-auto' src={ele.image} alt={ele.name} /></td>
                                     <td
                                         className='border-2 border-black'
                                     >{ele.title}</td>
@@ -358,19 +306,14 @@ export default function StoreProducts() {
                                             onClick={() => editProd(ele)}
                                         >Edit</button></td>
                                     <td className='border-2 border-black'>
-                                        <input
-                                            type="checkbox"
-                                            value={product._id}
-                                            checked={selectedProducts.includes(ele._id)}
-                                            onChange={() => handleCheckboxChange(ele._id)}
-                                        />
+                                        <Checkbox color='red' value={product._id} checked={selectedProducts.includes(ele._id)} onChange={() => handleCheckboxChange(ele._id)} ripple={true} />
                                     </td>
                                 </tr>
                             ))}
                     </tbody>
                 </table>
                 {
-                    isFetching && <Loader />
+                    isFetching && <TableLoader />
                 }
             </div>
         </div >

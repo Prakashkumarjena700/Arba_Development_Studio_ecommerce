@@ -3,6 +3,10 @@ import { ImSpinner2 } from "react-icons/im";
 import TermsAndCondition from '../components/TermsAndCondition';
 import { HiEyeOff, HiEye } from "react-icons/hi";
 import Navbar from '../components/Navbar';
+import { motion } from 'framer-motion';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Input } from "@material-tailwind/react";
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -26,7 +30,7 @@ const Profile = () => {
 
   const uploadPhoto = async (file) => {
     if (!file) {
-      alert('Please select a photo.');
+      toast.warn('Please select a photo.');
       return;
     }
 
@@ -62,7 +66,7 @@ const Profile = () => {
       setLoading(false)
     } catch (error) {
       setLoading(false)
-      alert('Something went wrong');
+      toast.error('Something went wrong');
       console.error('Error uploading image:', error);
     }
   };
@@ -92,7 +96,7 @@ const Profile = () => {
         if (res.success) {
           setUser(res.data)
           localStorage.setItem('user', JSON.stringify(res.data))
-          alert('User data has been updated')
+          toast.success('User data has been updated')
         }
 
         setFullNameModal(false)
@@ -101,7 +105,7 @@ const Profile = () => {
 
       })
       .catch(err => {
-        alert('Something went wrong')
+        toast.error('Something went wrong')
         console.log(err)
         setFullNameModal(false)
         setPasswordModal(false)
@@ -111,8 +115,8 @@ const Profile = () => {
 
   return (
     <div>
+      <ToastContainer />
       <Navbar />
-
       <div className='flex justify-center items-center flex-col'>
         <div>
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
@@ -136,8 +140,8 @@ const Profile = () => {
         <div className='flex gap-10 mt-10' >
           <button
             onClick={() => {
-              localStorage.removeItem('hasAcceptedTerms')
               setShowTandC(true)
+              localStorage.removeItem('hasAcceptedTerms')
             }}
             className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
           >See T & C</button>
@@ -160,37 +164,25 @@ const Profile = () => {
         fullNameModal || passwordModal ?
 
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-8 ">
+            <motion.div
+              whileInView={{ scale: 1.2 }}
+              className="bg-white p-8 ">
               {fullNameModal && (
-                <div>
-                  <h2>Update fullname</h2>
-                  <input
-                    type="text"
-                    defaultValue={user.fullName}
-                    placeholder="Enter new full name"
-                    className="outline-none border-b-2 w-full border-[#00AAC3] my-6 "
-                    onChange={(e) => setFullname(e.target.value)}
-                  />
+                <div className='mb-4' >
+                  <h2 className='mb-3' >Update Full Name</h2>
+                  <Input defaultValue={user.fullName} color='cyan' variant="standard" label="Full Name" placeholder="Enter new full name" onChange={(e) => setFullname(e.target.value)} />
                 </div>
               )}
               {passwordModal && (
                 <div>
                   <p>Update password</p>
-                  <div className='flex my-2 mt-6 border-b-2 border-[#00AAC3] ' >
-                    <input
-                      type="text"
-                      placeholder="Enter new password"
-                      className="outline-none w-[91%]"
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-
+                  <div className='flex my-2 mt-6 ' >
+                    <Input type={showPassword ? 'text' : 'password'} color='cyan' variant="standard" label="New Passsword" placeholder="Enter new password" onChange={(e) => setPassword(e.target.value)} />
                     <button
-                      className='text-[#00AAC3]'
-                      onClick={() => setShowPassword(!showPassword)} >{showPassword ? <HiEye /> : <HiEyeOff />}</button>
+                      className='text-[#00AAC3] absolute right-10 pt-5'
+                      onClick={() => setShowPassword(!showPassword)} >{showPassword ? <HiEyeOff /> : <HiEye />}</button>
                   </div>
                 </div>
-
-
               )}
               <div className="flex justify-center">
                 <button
@@ -210,7 +202,7 @@ const Profile = () => {
 
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div> : ''
       }
 
