@@ -21,22 +21,22 @@ function HomeCarousel() {
         <div className="slider-container" >
             <Slider {...settings}>
                 <div className='p-5' >
-                    <img className='lg:h-[350px] md:h-[350px] h-[150px]  lg:w-[97%] md:w-[97%] w-full'  src="https://mindstacktechnologies.com/wordpress/wp-content/uploads/2018/01/ecommerce-banner.jpg" alt="" />
+                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://marketplace.canva.com/EAFED0hv9G0/1/0/1600w/canva-blue-pink-modern-special-offer-sale-banner-J5VkNReQ8WA.jpg" alt="" />
+                </div>
+                <div className='p-5' >
+                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://images.template.net/108414/fashion-sale-banner-template-85svg.jpg" alt="" />
+                </div>
+                <div className='p-5' >
+                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://t4.ftcdn.net/jpg/03/92/21/09/360_F_392210928_JgmPZsGuKSye5FqOoCyjSGRTF7fJIgOS.jpg" alt="" />
+                </div>
+                <div className='p-5' >
+                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://img.freepik.com/premium-vector/big-summer-sale-banner-template-product-podium-with-summer-elements_560226-857.jpg" alt="" />
                 </div>
                 <div className='p-5' >
                     <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://static.vecteezy.com/system/resources/previews/002/294/833/non_2x/e-commerce-promotion-web-banner-design-free-vector.jpg" alt="" />
                 </div>
-                <div className='p-5' >
-                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://www.jdmedia.co.za/images/carousel/Ecommerce-Banner-1920.jpg" alt="" />
-                </div>
-                <div className='p-5' >
-                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/grocery-sale-retail-or-e-commerce-banner-ad-design-template-67720435bb809be27f46dfb1dd44c6fa_screen.jpg?ts=1606113265" alt="" />
-                </div>
-                <div className='p-5' >
-                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://static.vecteezy.com/system/resources/thumbnails/004/299/813/small/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" alt="" />
-                </div>
                 <div className=' p-5' >
-                    <img className=' lg:h-[350px] md:h-[350px] h-[150px] lg:w-[97%] md:w-[97%] w-full' src="https://static.vecteezy.com/system/resources/thumbnails/011/871/820/small/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" alt="" />
+                    <img className='lg:h-[350px] md:h-[350px] h-[150px]  lg:w-[97%] md:w-[97%] w-full'  src="https://mindstacktechnologies.com/wordpress/wp-content/uploads/2018/01/ecommerce-banner.jpg" alt="" />
                 </div>
 
             </Slider>
