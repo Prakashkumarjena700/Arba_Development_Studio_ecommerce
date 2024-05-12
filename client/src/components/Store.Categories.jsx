@@ -171,7 +171,9 @@ export default function StoreCategories() {
                 {
                     filterModal && (
                         <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 ' >
-                            <div className='bg-white p-9 lg:w-[40%] md:w-[50%] w-[70%]' >
+                            <motion.div
+                            whileInView={{scale:1.1}}
+                            className='bg-white p-9 lg:w-[40%] md:w-[50%] w-[70%]' >
                                 <h2 className='text-xl font-bold' >Filter</h2>
                                 <Select color="cyan" onChange={(val) => setName(val)} variant="standard" label="Filter category by name ">
                                     {
@@ -191,7 +193,7 @@ export default function StoreCategories() {
                                         <span>Apply</span>
                                     </button>
                                 </div>
-                            </div>
+                            </motion.div>
 
                         </div>
                     )
