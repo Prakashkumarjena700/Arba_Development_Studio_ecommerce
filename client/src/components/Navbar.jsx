@@ -4,6 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { addingCartCount } from '../redux/Products/productsActions';
 import Logo from '../assets/Logo';
+import { FaStore } from "react-icons/fa";
+import { FaRegUserCircle } from "react-icons/fa";
+import { TbLogout2 } from "react-icons/tb";
+
 export default function Navbar() {
     const [showDropdown, setShowDropdown] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'))
@@ -40,9 +44,9 @@ export default function Navbar() {
                 {showDropdown && (
                     <div onClick={() => setShowDropdown(false)} className='absolute w-[150px] text-left right-2 mt-2 p-2 bg-white rounded border shadow-inner z-50'>
                         <ul>
-                            <li><Link to='/my-store' className=' block cursor-pointer'>My Store</Link></li>
-                            <li> <Link to='/profile' className='block cursor-pointer'>Profile</Link></li>
-                            <li><p className=' cursor-pointer' onClick={logOut} >Logout</p></li>
+                            <li><Link to='/my-store' className=' flex items-center gap-3 cursor-pointer border-b border-cyan-200 py-1 '> <p className='text-cyan-500' ><FaStore/></p> <p>My Store</p>  </Link></li>
+                            <li> <Link to='/profile' className='flex items-center gap-3 cursor-pointer border-b border-cyan-200 py-1'> <p className='text-cyan-500' ><FaRegUserCircle/> </p> <p>Profile</p>  </Link></li>
+                            <li className='flex items-center gap-3' ><p className='text-cyan-500' ><TbLogout2/></p> <p className=' cursor-pointer' onClick={logOut} >Logout</p>  </li>
                         </ul>
                     </div>
                 )}
