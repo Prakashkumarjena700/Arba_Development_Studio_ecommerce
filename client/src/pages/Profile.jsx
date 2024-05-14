@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input } from "@material-tailwind/react";
+import profileBg from "../assets/profile_bg.png"
 
 const Profile = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -117,41 +118,45 @@ const Profile = () => {
     <div>
       <ToastContainer />
       <Navbar />
-      <div className='flex justify-center items-center flex-col'>
-        <div>
+      <div className='border h-[250px] bg-no-repeat bg-cover' style={{backgroundImage: `url(${profileBg})`}}>
+      </div>
+      <div className='absolute w-full top-20 flex justify-center items-center flex-col'>
+        <div className='' >
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
           <img src={user?.avatar} alt=""
-            className={`border w-28 rounded-full ${loading ? 'bg-black opacity-10' : ''}`}
+            className={`border-2 w-28 rounded-full  relative top-16 ${loading ? 'bg-black opacity-10' : ''}`}
             onClick={handleImageClick} style={{ cursor: 'pointer' }} />
           <button className=' w-28 flex justify-center relative bottom-20 text-[30px] text-[#00AAC3]' >{loading && <span className='animate-spin' ><ImSpinner2 /></span>}</button>
         </div>
-        <div>
-          <p>{user?.userName}</p>
-          <p>{user?.email}</p>
-          <p>Full Name: {user?.fullName}</p>
-          <button
-            onClick={() => {
-              setFullNameModal(true)
-              setPasswordModal(false)
-            }}
-            className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
-          >Update Profile</button>
-        </div>
-        <div className='flex gap-10 mt-10' >
-          <button
-            onClick={() => {
-              setShowTandC(true)
-              localStorage.removeItem('hasAcceptedTerms')
-            }}
-            className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
-          >See T & C</button>
-          <button
-            onClick={() => {
-              setFullNameModal(false)
-              setPasswordModal(true)
-            }}
-            className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
-          >Change Password</button>
+        <div className='shadow-lg border rounded-xl p-20 bg-white' >
+          <div>
+            <p>{user?.userName}</p>
+            <p>{user?.email}</p>
+            <p>Full Name: {user?.fullName}</p>
+            <button
+              onClick={() => {
+                setFullNameModal(true)
+                setPasswordModal(false)
+              }}
+              className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
+            >Update Profile</button>
+          </div>
+          <div className='flex gap-10 mt-10' >
+            <button
+              onClick={() => {
+                setShowTandC(true)
+                localStorage.removeItem('hasAcceptedTerms')
+              }}
+              className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
+            >See T & C</button>
+            <button
+              onClick={() => {
+                setFullNameModal(false)
+                setPasswordModal(true)
+              }}
+              className='bg-[#00AAC3] text-white px-2 py-0.5 mt-2'
+            >Change Password</button>
+          </div>
         </div>
       </div>
 

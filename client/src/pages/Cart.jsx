@@ -43,7 +43,7 @@ export default function Cart() {
         {
           products && products.map((ele) =>
             <div key={ele._id} className='h-[300px]' >
-              <img className='w-full h-[70%]' src={ele.image} alt="" />
+              <img className='w-full h-[70%] border-cyan-100 border-2 p-2' src={ele.image} alt="" />
               <div className='border w-[85%] m-auto bg-white shadow-lg p-2 relative bottom-20 z-10 text-left' >
                 <strong>{ele.title}</strong>
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>

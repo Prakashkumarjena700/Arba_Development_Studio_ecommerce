@@ -279,33 +279,33 @@ export default function StoreProducts() {
 
             <div>
                 <table className='m-auto w-full mt-3'>
-                    <thead className='border-2 border-black text-white bg-blue-500'>
+                    <thead className='border-2   text-white bg-[#00AAC3]'>
                         <tr >
-                            <th className='border-2 border-black py-2 '  >Image</th>
-                            <th className='border-2 border-black'  >Name</th>
-                            <th className='border-2 border-black'  >Slug</th>
-                            <th className='border-2 border-black'  >Edit</th>
-                            <th className='border-2 border-black'  >Delete</th>
+                            <th className='border-2   py-2 '  >Image</th>
+                            <th className='border-2  '  >Name</th>
+                            <th className='border-2  '  >Slug</th>
+                            <th className='border-2  '  >Edit</th>
+                            <th className='border-2  '  >Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         {!isFetching &&
                             products && products.map(ele => (
                                 <tr
-                                    className='border-b-2 border-black'
+                                    className='border-b-2  '
                                     key={ele._id}>
                                     <td
-                                        className='border border-black'
-                                    ><img className='w-16 h-16 m-auto' src={ele.image} alt={ele.name} /></td>
+                                        className='border  '
+                                    ><img className='w-16 h-16 m-auto rounded border-cyan-100 border-2 p-1' src={ele.image} alt={ele.name} /></td>
                                     <td
-                                        className='border-2 border-black'
+                                        className='border-2  '
                                     >{ele.title}</td>
-                                    <td className='border-2 border-black' >{ele.slug}</td>
-                                    <td className='border-2 border-black' >
+                                    <td className='border-2  ' >{ele.slug}</td>
+                                    <td className='border-2  ' >
                                         <button
                                             onClick={() => editProd(ele)}
                                         >Edit</button></td>
-                                    <td className='border-2 border-black'>
+                                    <td className='border-2  '>
                                         <Checkbox color='red' value={product._id} checked={selectedProducts.includes(ele._id)} onChange={() => handleCheckboxChange(ele._id)} ripple={true} />
                                     </td>
                                 </tr>

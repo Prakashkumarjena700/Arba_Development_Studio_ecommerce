@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, addingCartCount } from '../redux/Products/productsActions';
 import { FaMinus, FaPlus } from "react-icons/fa";
-import Loader from '../components/Loader';
 import { CiSearch } from "react-icons/ci";
 import { getAllcategories } from '../redux/Categories/categoriesActions';
 import Navbar from '../components/Navbar';
@@ -171,8 +170,8 @@ export default function AllProducts() {
       <div className='grid lg:grid-cols-4  md:grid-cols-3 grid-cols-1 gap-20 p-10 ' >
         {!isFetching &&
           products && products.map((ele) =>
-            <div key={ele._id} className='h-[300px]' >
-              <img className='w-full h-[70%]' src={ele.image} alt="" />
+            <div key={ele._id} className='h-[300px] ' >
+              <img className='w-full h-[70%] border-cyan-100 border-2 p-2' src={ele.image} alt="" />
               <div className='border w-[85%] m-auto bg-white shadow-lg p-2 relative bottom-20 z-10 text-left' >
                 <strong>{ele.title}</strong>
                 <p className='h-14' > {ele.description.length > 50 ? `${ele.description.slice(0, 50)}...` : ele.description}</p>
